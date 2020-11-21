@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="#191926">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:id="@+id/gradient_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/movie_details_title"
-            android:textColor="@color/movie_name"
+            android:textColor="#ECECEC"
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/main_image"
@@ -122,7 +122,7 @@
             android:gravity="start|center_vertical"
             android:lineSpacingExtra="4sp"
             android:text="@string/movie_details_tag"
-            android:textColor="@color/tag"
+            android:textColor="#FF3466"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -200,7 +200,7 @@
             android:layout_marginTop="24dp"
             android:lineSpacingExtra="4sp"
             android:text="@string/movie_details_storyline"
-            android:textColor="@color/movie_name"
+            android:textColor="#ECECEC"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -289,12 +289,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
             android:lineSpacingExtra="2sp"
             android:text="@string/movie_details_actor_1"
             android:textColor="#D8D8D8"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/barrierActors"
             app:layout_constraintEnd_toEndOf="@+id/actor_1_image"
             app:layout_constraintStart_toStartOf="@+id/actor_1_image"
             app:layout_constraintTop_toBottomOf="@+id/actor_1_image" />
@@ -304,12 +306,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
             android:lineSpacingExtra="2sp"
             android:text="@string/movie_details_actor_2"
             android:textColor="#D8D8D8"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/barrierActors"
             app:layout_constraintEnd_toEndOf="@+id/actor_2_image"
             app:layout_constraintStart_toStartOf="@+id/actor_2_image"
             app:layout_constraintTop_toBottomOf="@+id/actor_2_image" />
@@ -319,12 +323,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
             android:lineSpacingExtra="2sp"
             android:text="@string/movie_details_actor_3"
             android:textColor="#D8D8D8"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/barrierActors"
             app:layout_constraintEnd_toEndOf="@+id/actor_3_image"
             app:layout_constraintStart_toStartOf="@+id/actor_3_image"
             app:layout_constraintTop_toBottomOf="@+id/actor_3_image" />
@@ -334,15 +340,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
             android:lineSpacingExtra="2sp"
             android:text="@string/movie_details_actor_4"
             android:textColor="#D8D8D8"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/barrierActors"
             app:layout_constraintEnd_toEndOf="@+id/actor_4_image"
             app:layout_constraintStart_toStartOf="@+id/actor_4_image"
             app:layout_constraintTop_toBottomOf="@+id/actor_4_image" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierActors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="actor_1_text,actor_2_text,actor_3_text,actor_4_text"
+            tools:layout_editor_absoluteY="669dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
