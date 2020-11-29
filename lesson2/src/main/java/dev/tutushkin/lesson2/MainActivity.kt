@@ -1,4 +1,4 @@
-package dev.tutushkin.lesson3
+package dev.tutushkin.lesson2
 
 import android.content.Intent
 import android.os.Bundle

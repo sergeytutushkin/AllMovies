@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Lesson 3</string>
+    <string name="app_name">AAGFundamentals2020</string>
+
+    <string name="movie_details_back">Back</string>
+    <string name="movie_details_13">13+</string>
+    <string name="movie_details_title">Avengers:\nEnd Game</string>
+    <string name="movie_details_tag">Action, Adventure, Fantasy</string>
+    <string name="movie_details_reviews">125 REVIEWS</string>
+    <string name="movie_details_storyline">Storyline</string>
+    <string name="movie_details_storyline_description">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="movie_details_cast">Cast</string>
+    <string name="movie_details_actor_1">Robert Downey Jr.</string>
+    <string name="movie_details_actor_2">Chris\nEvans</string>
+    <string name="movie_details_actor_3">Mark\nRuffalo</string>
+    <string name="movie_details_actor_4">Chris Hemsworth</string>
 </resources>
