@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191926">
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".MovieDetailsActivity">
+        tools:context=".MainActivity">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_guideline"
@@ -357,8 +357,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="actor_1_text,actor_2_text,actor_3_text,actor_4_text"
-            tools:layout_editor_absoluteY="669dp" />
+            app:constraint_referenced_ids="actor_1_text,actor_2_text,actor_3_text,actor_4_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
