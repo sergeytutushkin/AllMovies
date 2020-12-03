@@ -13,4 +13,10 @@
     <string name="movie_details_actor_2">Chris\nEvans</string>
     <string name="movie_details_actor_3">Mark\nRuffalo</string>
     <string name="movie_details_actor_4">Chris Hemsworth</string>
+
+    <string name="movies_list_screen_title">Movies list</string>
+    <string name="movies_list_tag">Action, Adventure, Drama</string>
+    <string name="movie_list_reviews">125 REVIEWS</string>
+    <string name="movie_list_title">Avengers: End Game</string>
+    <string name="movie_list_min">137 MIN</string>
 </resources>
