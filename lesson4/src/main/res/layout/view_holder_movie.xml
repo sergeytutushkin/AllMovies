@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movies_list_movie_card"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="14dp"
     app:cardBackgroundColor="@color/background_movie_item"
     app:cardCornerRadius="8dp"
     app:strokeColor="@color/border_movie_item"
@@ -17,21 +19,27 @@
             android:id="@+id/view_holder_movie_main_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/movie"
+            tools:background="@drawable/movie_avengers_end_games"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/mask_list" />
 
-        <ImageView
-            android:id="@+id/view_holder_movie_pg_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/view_holder_movie_age_text"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="8dp"
+            android:alpha="0.9"
+            android:background="@drawable/bg_age"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/view_holder_movie_main_image"
             app:layout_constraintTop_toTopOf="@id/view_holder_movie_main_image"
-            app:srcCompat="@drawable/ic_pg" />
+            tools:text="13+" />
 
         <ImageView
             android:id="@+id/view_holder_movie_like_image"
@@ -41,7 +49,7 @@
             android:layout_marginEnd="6dp"
             app:layout_constraintEnd_toEndOf="@id/view_holder_movie_main_image"
             app:layout_constraintTop_toTopOf="@id/view_holder_movie_main_image"
-            app:srcCompat="@drawable/ic_like" />
+            app:srcCompat="@drawable/ic_notlike" />
 
         <RatingBar
             android:id="@+id/view_holder_movie_rating"
