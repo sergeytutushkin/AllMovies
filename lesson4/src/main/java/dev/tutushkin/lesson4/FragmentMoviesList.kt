@@ -22,7 +22,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list) {
                     .commit()
             }
         }
-        val movies = MoviesDataSource().generateMovies()
+        val movies = DataUtils().generateMovies()
         val adapter = MovieAdapter(movies, listener)
 
         recycler.adapter = adapter

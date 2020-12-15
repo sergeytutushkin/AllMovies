@@ -1,6 +1,6 @@
 package dev.tutushkin.lesson4
 
-class MoviesDataSource {
+class DataUtils {
     fun generateMovies(): List<Movie> {
         return listOf(
             Movie(
@@ -11,7 +11,9 @@ class MoviesDataSource {
                 125,
                 137,
                 "13+",
-                false
+                false,
+                "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+                generateActors()
             ),
             Movie(
                 "Tenet",
@@ -21,7 +23,9 @@ class MoviesDataSource {
                 98,
                 97,
                 "16+",
-                true
+                true,
+                "",
+                null
             ),
             Movie(
                 "Black Widow",
@@ -31,7 +35,9 @@ class MoviesDataSource {
                 38,
                 102,
                 "13+",
-                false
+                false,
+                "",
+                null
             ),
             Movie(
                 "Wonder Woman 1984",
@@ -41,8 +47,32 @@ class MoviesDataSource {
                 74,
                 120,
                 "13+",
-                false
+                false,
+                "",
+                null
             )
         )
     }
+
+    fun generateActors(): List<Actor> {
+        return listOf(
+            Actor(
+                "Robert Downey Jr.",
+                R.drawable.robert_downey_jr
+            ),
+            Actor(
+                "Chris Evans",
+                R.drawable.chris_evans
+            ),
+            Actor(
+                "Mark Ruffalo",
+                R.drawable.mark_ruffalo
+            ),
+            Actor(
+                "Chris Hemsworth",
+                R.drawable.chris_hemsworth
+            )
+        )
+    }
+
 }

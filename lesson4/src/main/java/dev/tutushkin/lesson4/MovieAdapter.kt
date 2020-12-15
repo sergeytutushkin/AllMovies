@@ -27,11 +27,11 @@ class MovieAdapter(
 
     class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
-        private val image: ImageView = view.findViewById(R.id.view_holder_movie_main_image)
+        private val image: ImageView = view.findViewById(R.id.view_holder_movie_poster_image)
         private val age: TextView = view.findViewById(R.id.view_holder_movie_age_text)
         private val like: ImageView = view.findViewById(R.id.view_holder_movie_like_image)
         private val rating: RatingBar = view.findViewById(R.id.view_holder_movie_rating)
-        private val genres: TextView = view.findViewById(R.id.view_holder_movie_tag_text)
+        private val genres: TextView = view.findViewById(R.id.view_holder_movie_genres_text)
         private val reviews: TextView = view.findViewById(R.id.view_holder_movie_reviews_text)
         private val title: TextView = view.findViewById(R.id.view_holder_movie_title_text)
         private val duration: TextView = view.findViewById(R.id.view_holder_movie_length_text)
@@ -39,9 +39,9 @@ class MovieAdapter(
         fun bind(movie: Movie, clickListener: MoviesListClickListener) {
             title.text = movie.title
             genres.text = movie.genres
-            duration.text = "${movie.duration} MIN"
-            reviews.text = "${movie.reviews} REVIEWS"
-            image.setBackgroundResource(movie.image)
+            duration.text = view.context.getString(R.string.movie_list_duration, movie.duration)
+            reviews.text = view.context.getString(R.string.movie_list_reviews, movie.reviews)
+            image.setBackgroundResource(movie.poster)
             age.text = movie.age
             if (movie.like) {
                 like.setImageResource(R.drawable.ic_like)

@@ -16,14 +16,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/view_holder_movie_main_image"
+            android:id="@+id/view_holder_movie_poster_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:background="@drawable/movie_avengers_end_games"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mask_list" />
+            app:srcCompat="@drawable/mask_list"
+            tools:background="@drawable/movie_avengers_end_games" />
 
         <TextView
             android:id="@+id/view_holder_movie_age_text"
@@ -37,8 +37,8 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/view_holder_movie_main_image"
-            app:layout_constraintTop_toTopOf="@id/view_holder_movie_main_image"
+            app:layout_constraintStart_toStartOf="@id/view_holder_movie_poster_image"
+            app:layout_constraintTop_toTopOf="@id/view_holder_movie_poster_image"
             tools:text="13+" />
 
         <ImageView
@@ -47,8 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="6dp"
-            app:layout_constraintEnd_toEndOf="@id/view_holder_movie_main_image"
-            app:layout_constraintTop_toTopOf="@id/view_holder_movie_main_image"
+            app:layout_constraintEnd_toEndOf="@id/view_holder_movie_poster_image"
+            app:layout_constraintTop_toTopOf="@id/view_holder_movie_poster_image"
             app:srcCompat="@drawable/ic_notlike" />
 
         <RatingBar
@@ -64,21 +64,21 @@
             android:progressTint="@color/rating_on"
             android:rating="4"
             android:stepSize="1"
-            app:layout_constraintBottom_toBottomOf="@id/view_holder_movie_main_image"
-            app:layout_constraintStart_toStartOf="@id/view_holder_movie_main_image" />
+            app:layout_constraintBottom_toBottomOf="@id/view_holder_movie_poster_image"
+            app:layout_constraintStart_toStartOf="@id/view_holder_movie_poster_image" />
 
         <TextView
-            android:id="@+id/view_holder_movie_tag_text"
+            android:id="@+id/view_holder_movie_genres_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginBottom="4dp"
             android:gravity="start|center_vertical"
-            android:text="@string/movies_list_tag"
             android:textColor="@color/tag"
             android:textSize="8sp"
             app:layout_constraintBottom_toTopOf="@+id/view_holder_movie_rating"
-            app:layout_constraintStart_toStartOf="@+id/view_holder_movie_main_image" />
+            app:layout_constraintStart_toStartOf="@+id/view_holder_movie_poster_image"
+            tools:text="Action, Adventure, Drama" />
 
         <TextView
             android:id="@+id/view_holder_movie_reviews_text"
@@ -86,13 +86,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:gravity="start|center_vertical"
-            android:text="@string/movie_list_reviews"
             android:textColor="@color/reviews"
             android:textSize="8sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/view_holder_movie_rating"
             app:layout_constraintStart_toEndOf="@+id/view_holder_movie_rating"
-            app:layout_constraintTop_toTopOf="@+id/view_holder_movie_rating" />
+            app:layout_constraintTop_toTopOf="@+id/view_holder_movie_rating"
+            tools:text="125 REVIEWS" />
 
         <TextView
             android:id="@+id/view_holder_movie_title_text"
@@ -101,12 +101,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="start|center_vertical"
-            android:text="@string/movie_list_title"
-            android:textColor="@color/movie_name"
+            android:textColor="@color/header"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_holder_movie_main_image" />
+            app:layout_constraintTop_toBottomOf="@+id/view_holder_movie_poster_image"
+            tools:text="Avengers: End Game" />
 
         <TextView
             android:id="@+id/view_holder_movie_length_text"
@@ -114,13 +114,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
-            android:text="@string/movie_list_min"
             android:textColor="@color/movie_length"
             android:textSize="8sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/view_holder_movie_title_text"
-            app:layout_constraintTop_toBottomOf="@+id/view_holder_movie_title_text" />
+            app:layout_constraintTop_toBottomOf="@+id/view_holder_movie_title_text"
+            tools:text="137 MIN" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
