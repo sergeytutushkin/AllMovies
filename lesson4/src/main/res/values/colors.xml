@@ -9,12 +9,15 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="background">#191926</color>
-    <color name="background_movie_item">#222232</color>
-    <color name="border_movie_item">#3B3B4D</color>
+    <color name="header">#ECECEC</color>
     <color name="rating_off">#6D6D80</color>
     <color name="rating_on">#FF3365</color>
     <color name="tag">#FF3466</color>
     <color name="reviews">#6D6D80</color>
-    <color name="movie_name">#ECECEC</color>
     <color name="movie_length">#565665</color>
+
+    <color name="background_movie_item">#222232</color>
+    <color name="border_movie_item">#3B3B4D</color>
+
+    <color name="actor_name">#D8D8D8</color>
 </resources>

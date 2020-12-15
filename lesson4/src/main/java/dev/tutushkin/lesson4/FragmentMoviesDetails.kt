@@ -10,7 +10,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.back_text).setOnClickListener {
+        view.findViewById<TextView>(R.id.movies_details_back_text).setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
     }
