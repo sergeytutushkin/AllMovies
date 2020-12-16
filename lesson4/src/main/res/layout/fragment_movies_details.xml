@@ -29,7 +29,7 @@
             android:id="@+id/movies_details_poster_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:background="@drawable/orig"
+            tools:background="@drawable/movie_avengers_end_games_big"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
             tools:text="125 REVIEWS" />
 
         <TextView
-            android:id="@+id/movies_details_storyline_title_text"
+            android:id="@+id/movies_details_storyline_header_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -148,7 +148,7 @@
             app:layout_constraintTop_toBottomOf="@+id/movies_details_reviews_text" />
 
         <TextView
-            android:id="@+id/movies_details_storyline_description_text"
+            android:id="@+id/movies_details_storyline_content_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -159,7 +159,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movies_details_storyline_title_text"
+            app:layout_constraintTop_toBottomOf="@+id/movies_details_storyline_header_text"
             tools:text="After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe." />
 
         <TextView
@@ -174,12 +174,12 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movies_details_storyline_description_text" />
+            app:layout_constraintTop_toBottomOf="@+id/movies_details_storyline_content_text" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movie_details_actors_recycler"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"

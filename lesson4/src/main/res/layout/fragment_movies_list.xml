@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/movies_list_target_image" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movie_list_recycler"
+        android:id="@+id/movies_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

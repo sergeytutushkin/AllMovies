@@ -5,7 +5,8 @@ class DataUtils {
         return listOf(
             Movie(
                 "Avengers: End Game",
-                R.drawable.movie_avengers_end_games,
+                R.drawable.movie_avengers_end_games_small,
+                R.drawable.movie_avengers_end_games_big,
                 "Action, Adventure, Drama",
                 3f,
                 125,
@@ -18,6 +19,7 @@ class DataUtils {
             Movie(
                 "Tenet",
                 R.drawable.movie_tenet,
+                null,
                 "Action, Sci-Fi, Thriller",
                 5f,
                 98,
@@ -30,6 +32,7 @@ class DataUtils {
             Movie(
                 "Black Widow",
                 R.drawable.movie_black_widow,
+                null,
                 "Action, Adventure, Sci-Fi",
                 4f,
                 38,
@@ -42,6 +45,7 @@ class DataUtils {
             Movie(
                 "Wonder Woman 1984",
                 R.drawable.movie_wonder_woman_1984,
+                null,
                 "Action, Adventure, Fantasy",
                 5f,
                 74,

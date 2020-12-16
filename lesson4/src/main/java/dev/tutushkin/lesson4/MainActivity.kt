@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.main_container, FragmentMoviesList())
+                .add(R.id.main_container, MoviesListFragment())
                 .commit()
         }
     }

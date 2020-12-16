@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/mask_list"
-            tools:background="@drawable/movie_avengers_end_games" />
+            tools:background="@drawable/movie_avengers_end_games_small" />
 
         <TextView
             android:id="@+id/view_holder_movie_age_text"

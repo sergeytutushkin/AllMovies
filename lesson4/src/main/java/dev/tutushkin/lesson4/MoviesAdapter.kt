@@ -39,9 +39,9 @@ class MovieAdapter(
         fun bind(movie: Movie, clickListener: MoviesListClickListener) {
             title.text = movie.title
             genres.text = movie.genres
-            duration.text = view.context.getString(R.string.movie_list_duration, movie.duration)
-            reviews.text = view.context.getString(R.string.movie_list_reviews, movie.reviews)
-            image.setBackgroundResource(movie.poster)
+            duration.text = view.context.getString(R.string.movies_list_duration, movie.duration)
+            reviews.text = view.context.getString(R.string.movies_list_reviews, movie.reviews)
+            image.setBackgroundResource(movie.posterSmall)
             age.text = movie.age
             if (movie.like) {
                 like.setImageResource(R.drawable.ic_like)
