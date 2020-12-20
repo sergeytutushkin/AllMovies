@@ -1,4 +1,4 @@
-package dev.tutushkin.lesson4
+package dev.tutushkin.lesson5
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
