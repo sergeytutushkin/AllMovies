@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AAGFundamentals2020</string>
+
+    <string name="movie_details_back">Back</string>
+    <string name="movie_details_reviews">%1$d REVIEWS</string>
+    <string name="movie_details_storyline">Storyline</string>
+    <string name="movie_details_cast">Cast</string>
+
+    <string name="movies_list_screen_title">Movies list</string>
+    <string name="movies_list_reviews">%1$d REVIEWS</string>
+    <string name="movies_list_duration">%1$d MIN</string>
+</resources>
