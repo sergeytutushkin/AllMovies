@@ -9,4 +9,5 @@
     <string name="movies_list_screen_title">Movies list</string>
     <string name="movies_list_reviews">%1$d REVIEWS</string>
     <string name="movies_list_duration">%1$d MIN</string>
+    <string name="movies_list_age">%1$d+</string>
 </resources>

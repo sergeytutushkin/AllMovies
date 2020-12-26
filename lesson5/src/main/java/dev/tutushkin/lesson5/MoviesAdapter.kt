@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dev.tutushkin.lesson5.data.Movie
 
 class MovieAdapter(
@@ -30,7 +31,6 @@ class MovieAdapter(
 
         private val image: ImageView = view.findViewById(R.id.view_holder_movie_poster_image)
         private val age: TextView = view.findViewById(R.id.view_holder_movie_age_text)
-        private val like: ImageView = view.findViewById(R.id.view_holder_movie_like_image)
         private val rating: RatingBar = view.findViewById(R.id.view_holder_movie_rating)
         private val genres: TextView = view.findViewById(R.id.view_holder_movie_genres_text)
         private val reviews: TextView = view.findViewById(R.id.view_holder_movie_reviews_text)
@@ -39,17 +39,15 @@ class MovieAdapter(
 
         fun bind(movie: Movie, clickListener: MoviesListClickListener) {
             title.text = movie.title
-            genres.text = movie.genres
-            duration.text = view.context.getString(R.string.movies_list_duration, movie.duration)
-            reviews.text = view.context.getString(R.string.movies_list_reviews, movie.reviews)
-            image.setBackgroundResource(movie.posterSmall)
-            age.text = movie.age
-            if (movie.like) {
-                like.setImageResource(R.drawable.ic_like)
-            } else {
-                like.setImageResource(R.drawable.ic_notlike)
-            }
-            rating.rating = movie.rating
+            genres.text = movie.genres.joinToString() { it.name }
+            duration.text = view.context.getString(R.string.movies_list_duration, movie.runtime)
+            reviews.text = view.context.getString(R.string.movies_list_reviews, movie.numberOfRatings)
+            age.text = view.context.getString(R.string.movies_list_age, movie.minimumAge)
+            rating.rating = movie.ratings / 2
+            Glide.with(view.context)
+                .load(movie.poster)
+                .into(image)
+
             view.setOnClickListener { clickListener.onItemClick(movie) }
         }
     }

@@ -27,13 +27,21 @@
 
         <ImageView
             android:id="@+id/movies_details_poster_image"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:background="@drawable/movie_avengers_end_games_big"
-            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/movie_avengers_end_games_big" />
+
+        <ImageView
+            android:id="@+id/movies_details_mask_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/movies_details_poster_image"
+            app:layout_constraintEnd_toEndOf="@+id/movies_details_poster_image"
+            app:layout_constraintStart_toStartOf="@+id/movies_details_poster_image"
             app:srcCompat="@drawable/mask" />
 
         <TextView
