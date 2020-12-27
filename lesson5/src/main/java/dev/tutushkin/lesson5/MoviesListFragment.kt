@@ -16,7 +16,7 @@ const val MOVIES_KEY = "MOVIES"
 
 class MoviesListFragment() : Fragment(R.layout.fragment_movies_list) {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO)
     var movies: List<Movie> = listOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class MoviesListFragment() : Fragment(R.layout.fragment_movies_list) {
             }
         }
 
-        coroutineScope.launch {
+        scope.launch {
             movies = loadMovies(requireContext())
             withContext(Dispatchers.Main) {
                 recycler.adapter = movies?.let { MovieAdapter(it, listener) }
