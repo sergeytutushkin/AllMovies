@@ -1,4 +1,4 @@
-package dev.tutushkin.lesson6
+package dev.tutushkin.lesson6.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,14 +6,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dev.tutushkin.lesson6.R
 import dev.tutushkin.lesson6.data.Movie
 
-class MovieAdapter(
-    private val movies: List<Movie>,
+class MoviesAdapter(
     private val clickListener: MoviesListClickListener
-) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+) : ListAdapter<Movie, MoviesAdapter.MovieViewHolder>(
+    MoviesListDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
@@ -22,10 +26,9 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movies[position], clickListener)
+        val item = getItem(position)
+        holder.bind(item, clickListener)
     }
-
-    override fun getItemCount(): Int = movies.size
 
     class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -50,6 +53,16 @@ class MovieAdapter(
 
             view.setOnClickListener { clickListener.onItemClick(movie) }
         }
+    }
+}
+
+class MoviesListDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem == newItem
     }
 }
 

@@ -6,15 +6,27 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dev.tutushkin.lesson6.adapters.ActorsAdapter
 import dev.tutushkin.lesson6.data.Movie
+import dev.tutushkin.lesson6.viewmodels.MovieDetailsViewModel
+import dev.tutushkin.lesson6.viewmodels.MovieDetailsViewModelFactory
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val application = requireNotNull(this.activity).application
+
+        // TODO Later pass id
+        val movieArg: Movie? = arguments?.getParcelable(MOVIES_KEY)
+        val viewModelFactory = MovieDetailsViewModelFactory(application, movieArg!!)
+
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(MovieDetailsViewModel::class.java)
 
         val poster: ImageView = view.findViewById(R.id.movies_details_poster_image)
         val age: TextView = view.findViewById(R.id.movies_details_age_text)
@@ -25,22 +37,21 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         val storyline: TextView = view.findViewById(R.id.movies_details_storyline_content_text)
         val recycler = view.findViewById<RecyclerView>(R.id.movie_details_actors_recycler)
 
-        val movie: Movie? = arguments?.getParcelable(MOVIES_KEY)
-        movie?.run {
-            age.text = view.context.getString(R.string.movies_list_age, this.minimumAge)
-            title.text = this.title
-            genres.text = this.genres.joinToString() { it.name }
-            rating.rating = this.ratings.div(2)
-            reviews.text = view.context.getString(R.string.movie_details_reviews, this.runtime)
-            storyline.text = this.overview
+        viewModel.movie.observe(viewLifecycleOwner, { movie ->
+            age.text = view.context.getString(R.string.movies_list_age, movie.minimumAge)
+            title.text = movie.title
+            genres.text = movie.genres.joinToString() { it.name }
+            rating.rating = movie.ratings.div(2)
+            reviews.text = view.context.getString(R.string.movie_details_reviews, movie.runtime)
+            storyline.text = movie.overview
             Glide.with(requireContext())
-                .load(this.backdrop)
+                .load(movie.backdrop)
                 .into(poster)
 
             recycler.layoutManager =
                 LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            recycler.adapter = ActorsAdapter(this.actors)
-        }
+            recycler.adapter = ActorsAdapter(movie.actors)
+        })
 
         view.findViewById<TextView>(R.id.movies_details_back_text).setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
