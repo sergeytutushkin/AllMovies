@@ -8,10 +8,7 @@ import dev.tutushkin.lesson6.data.Movie
 
 class MovieDetailsViewModel(application: Application, currentMovie: Movie) : ViewModel() {
 
-    private val _movie = MutableLiveData<Movie>()
+    private val _movie = MutableLiveData(currentMovie)
     val movie: LiveData<Movie> = _movie
 
-    init {
-        _movie.postValue(currentMovie)
-    }
 }

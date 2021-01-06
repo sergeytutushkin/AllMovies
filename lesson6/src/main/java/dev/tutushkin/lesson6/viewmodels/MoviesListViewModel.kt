@@ -16,8 +16,8 @@ class MoviesListViewModel(application: Application) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val moviesList = loadMovies(application)
-            _movies.postValue(moviesList)
+            _movies.postValue(loadMovies(application))
         }
     }
+
 }
