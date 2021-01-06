@@ -1,4 +1,4 @@
-package dev.tutushkin.lesson6
+package dev.tutushkin.lesson6.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import dev.tutushkin.lesson6.R
 import dev.tutushkin.lesson6.data.Actor
 
 class ActorsAdapter(
