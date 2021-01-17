@@ -8,25 +8,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.tutushkin.lesson7.adapters.MoviesAdapter
 import dev.tutushkin.lesson7.adapters.MoviesListClickListener
-import dev.tutushkin.lesson7.data.Movie
 import dev.tutushkin.lesson7.viewmodels.MoviesListViewModel
 import dev.tutushkin.lesson7.viewmodels.MoviesListViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.ExperimentalSerializationApi
 
 const val MOVIES_KEY = "MOVIES"
 
-class MoviesListFragment() : Fragment(R.layout.fragment_movies_list) {
-
-    private val scope = CoroutineScope(Dispatchers.IO)
-    var movies: List<Movie> = listOf()
+@ExperimentalSerializationApi
+class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val application = requireNotNull(this.activity).application
+//        val displayMetrics = DisplayMetrics()
+//            ...
 
-        val viewModelFactory = MoviesListViewModelFactory(application)
+        val viewModelFactory = MoviesListViewModelFactory()
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(MoviesListViewModel::class.java)
 
@@ -34,9 +31,9 @@ class MoviesListFragment() : Fragment(R.layout.fragment_movies_list) {
         recycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         val listener = object : MoviesListClickListener {
-            override fun onItemClick(movie: Movie) {
+            override fun onItemClick(movieId: Int) {
                 val bundle = Bundle()
-                bundle.putParcelable(MOVIES_KEY, movie)
+                bundle.putInt(MOVIES_KEY, movieId)
                 val detailsFragment = MovieDetailsFragment()
                 detailsFragment.arguments = bundle
                 requireActivity().supportFragmentManager.beginTransaction()
