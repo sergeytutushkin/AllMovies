@@ -42,7 +42,7 @@ class MoviesAdapter(
 
         fun bind(movie: Movie, clickListener: MoviesListClickListener) {
             title.text = movie.title
-            genres.text = movie.genres.joinToString() { it.name }
+            genres.text = movie.genres.joinToString { it.name }
             duration.text = view.context.getString(R.string.movies_list_duration, movie.runtime)
             reviews.text = view.context.getString(R.string.movies_list_reviews, movie.numberOfRatings)
             age.text = view.context.getString(R.string.movies_list_age, movie.minimumAge)
@@ -51,7 +51,7 @@ class MoviesAdapter(
                 .load(movie.poster)
                 .into(image)
 
-            view.setOnClickListener { clickListener.onItemClick(movie) }
+            view.setOnClickListener { clickListener.onItemClick(movie.id) }
         }
     }
 }
@@ -67,5 +67,5 @@ class MoviesListDiffCallback : DiffUtil.ItemCallback<Movie>() {
 }
 
 interface MoviesListClickListener {
-    fun onItemClick(movie: Movie)
+    fun onItemClick(movieId: Int)
 }
