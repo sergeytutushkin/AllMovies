@@ -48,7 +48,7 @@ class MovieDetailsViewModel(id: Int) : ViewModel() {
                 Actor(
                     id = it.id,
                     name = it.name,
-                    picture = "$imagesBaseUrl$profileSize${it.profilePath}"
+                    photo = "$imagesBaseUrl$profileSize${it.profilePath}"
                 )
             }
         )
