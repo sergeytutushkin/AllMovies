@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.Genre
-import dev.tutushkin.lesson8.data.Movie
+import dev.tutushkin.lesson8.data.AppDatabase
+import dev.tutushkin.lesson8.data.GenreEntity
+import dev.tutushkin.lesson8.data.MovieEntity
 import dev.tutushkin.lesson8.data.MovieWithGenres
 import dev.tutushkin.lesson8.network.NetworkModule.genres
 import dev.tutushkin.lesson8.network.NetworkModule.imagesBaseUrl
@@ -47,7 +48,7 @@ class MoviesListViewModel : ViewModel() {
     private suspend fun loadGenres() {
         val genresResponse = tmdbApi.getGenres(BuildConfig.API_KEY).genres
         genres = genresResponse.map {
-            Genre(id = it.id, name = it.name)
+            GenreEntity(id = it.id, name = it.name)
         }
     }
 
@@ -55,8 +56,8 @@ class MoviesListViewModel : ViewModel() {
 
         val localMovies: List<MovieWithGenres> = withContext(Dispatchers.IO) {
             // TODO Read from DB
-
-            emptyList()
+            val db = AppDatabase.instance
+            return db.movieDao().getAll()
         }
 
         if (localMovies.isNotEmpty()) {
@@ -70,7 +71,7 @@ class MoviesListViewModel : ViewModel() {
         if (remoteMoviesResult is Result.Success) {
             val newMovies = remoteMoviesResult.data.results.map { movie ->
                 MovieWithGenres(
-                    movie = Movie(
+                    movie = MovieEntity(
                         id = movie.id,
                         title = movie.title,
                         overview = movie.overview,

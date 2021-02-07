@@ -1,12 +1,12 @@
 package dev.tutushkin.lesson8.data
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import dev.tutushkin.lesson8.App
 
-@Database(entities = [Movie::class, Genre::class, Actor::class], version = 1)
+@Database(entities = [MovieEntity::class, GenreEntity::class, ActorEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -17,20 +17,27 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         private const val DATABASE_NAME = "Movies.db"
 
-        @Volatile
-        private var instance: AppDatabase? = null
-
-        fun getInstance(context: Context): AppDatabase {
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
-            }
-        }
-
-        private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+        val instance: AppDatabase by lazy {
+            Room.databaseBuilder(App.appContext, AppDatabase::class.java, DATABASE_NAME)
                 .allowMainThreadQueries()   // TODO Delete!!!
                 .fallbackToDestructiveMigration()   // TODO Delete later!
                 .build()
         }
+
+//        @Volatile
+//        private var instance: AppDatabase? = null
+//
+//        fun getInstance(context: Context): AppDatabase {
+//            return instance ?: synchronized(this) {
+//                instance ?: buildDatabase(context).also { instance = it }
+//            }
+//        }
+//
+//        private fun buildDatabase(context: Context): AppDatabase {
+//            return Room.databaseBuilder(context., AppDatabase::class.java, DATABASE_NAME)
+//                .allowMainThreadQueries()   // TODO Delete!!!
+//                .fallbackToDestructiveMigration()   // TODO Delete later!
+//                .build()
+//        }
     }
 }

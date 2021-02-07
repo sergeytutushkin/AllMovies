@@ -21,7 +21,7 @@ interface MovieDao {
     fun insert(movie: MovieWithGenresAndActors): Long
 
     @Update
-    fun update(movie: Movie)
+    fun update(movie: MovieEntity)
 
     @Query("DELETE FROM movies WHERE id = :id")
     fun delete(id: Int)

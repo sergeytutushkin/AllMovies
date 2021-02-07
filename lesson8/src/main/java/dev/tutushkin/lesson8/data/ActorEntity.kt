@@ -2,9 +2,11 @@ package dev.tutushkin.lesson8.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "actors")
-data class Actor(
+data class ActorEntity(
+    @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
 

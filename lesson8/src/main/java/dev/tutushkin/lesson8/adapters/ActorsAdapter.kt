@@ -11,10 +11,10 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.Actor
+import dev.tutushkin.lesson8.data.ActorEntity
 
 class ActorsAdapter(
-    private val actors: List<Actor>
+    private val actors: List<ActorEntity>
 ) : RecyclerView.Adapter<ActorsAdapter.ActorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
@@ -34,7 +34,7 @@ class ActorsAdapter(
         private val photo: ImageView = view.findViewById(R.id.view_holder_actor_photo_image)
         private val name: TextView = view.findViewById(R.id.view_holder_actor_name_text)
 
-        fun onBind(actor: Actor) {
+        fun onBind(actor: ActorEntity) {
             name.text = actor.name
             Glide.with(view.context)
                 .load(actor.picture)

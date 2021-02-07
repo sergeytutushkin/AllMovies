@@ -2,7 +2,7 @@ package dev.tutushkin.lesson8.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.Genre
+import dev.tutushkin.lesson8.data.GenreEntity
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 object NetworkModule {
 
     var imagesBaseUrl = ""
-    var genres: List<Genre> = listOf()
+    var genres: List<GenreEntity> = listOf()
 
     // TODO Optimize image sizes dynamically based on a display
     var posterSize = "w342"
