@@ -6,19 +6,19 @@ import androidx.room.*
 interface MovieDao {
     @Transaction
     @Query("SELECT * FROM movies")
-    fun getAll(): List<MovieWithGenres>
+    fun getAll(): List<MovieEntity>
 
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :id")
-    fun getById(id: Int): MovieWithGenresAndActors
+    fun getById(id: Int): MovieEntity
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(movies: List<MovieWithGenres>)
+    fun insertAll(movies: List<MovieEntity>)
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: MovieWithGenresAndActors): Long
+    fun insert(movie: MovieEntity): Long
 
     @Update
     fun update(movie: MovieEntity)

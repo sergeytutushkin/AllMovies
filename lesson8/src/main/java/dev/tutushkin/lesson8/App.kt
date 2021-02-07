@@ -5,12 +5,21 @@ import dev.tutushkin.lesson8.data.AppDatabase
 
 class App : Application() {
 
-    val appContext = this
-    val database by lazy { AppDatabase.instance }
-
+    val database by lazy { AppDatabase.getInstance(this) }
+    //    lateinit var instance: App
+//    lateinit var database: AppDatabase
+//
 //    override fun onCreate() {
 //        super.onCreate()
 //
-//        database = AppDatabase.getInstance(this)
+////        instance = this
+//        database = Room.databaseBuilder(
+//            this,
+//            AppDatabase::class.java,
+//            "Movies.db"
+//        )
+//            .allowMainThreadQueries()   // TODO Delete!!!
+//            .fallbackToDestructiveMigration()   // TODO Delete later!
+//            .build()
 //    }
 }

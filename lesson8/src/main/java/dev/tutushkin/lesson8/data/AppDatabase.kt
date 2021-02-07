@@ -1,10 +1,10 @@
 package dev.tutushkin.lesson8.data
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.tutushkin.lesson8.App
 
 @Database(entities = [MovieEntity::class, GenreEntity::class, ActorEntity::class], version = 1)
 @TypeConverters(Converters::class)
@@ -15,15 +15,26 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun actorDao(): ActorDao
 
     companion object {
-        private const val DATABASE_NAME = "Movies.db"
+//        private const val DATABASE_NAME = "Movies.db"
 
-        val instance: AppDatabase by lazy {
-            Room.databaseBuilder(App.appContext, AppDatabase::class.java, DATABASE_NAME)
-                .allowMainThreadQueries()   // TODO Delete!!!
-                .fallbackToDestructiveMigration()   // TODO Delete later!
-                .build()
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "Movies.db"
+                )
+                    .allowMainThreadQueries()   // TODO Delete!!!
+                    .fallbackToDestructiveMigration()   // TODO Delete later!
+                    .build()
+                INSTANCE = instance
+                instance
+            }
         }
-
+    }
 //        @Volatile
 //        private var instance: AppDatabase? = null
 //
@@ -39,5 +50,5 @@ abstract class AppDatabase : RoomDatabase() {
 //                .fallbackToDestructiveMigration()   // TODO Delete later!
 //                .build()
 //        }
-    }
+//    }
 }

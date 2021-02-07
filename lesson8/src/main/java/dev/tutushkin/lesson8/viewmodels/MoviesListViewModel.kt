@@ -1,5 +1,6 @@
 package dev.tutushkin.lesson8.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,13 +21,15 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(application: Application) : ViewModel() {
 
     private val _movies = MutableLiveData<List<MovieWithGenres>>()
     val movies: LiveData<List<MovieWithGenres>> = _movies
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
+
+    val db: AppDatabase = AppDatabase.getInstance(application)
 
     init {
         viewModelScope.launch {
@@ -54,11 +57,7 @@ class MoviesListViewModel : ViewModel() {
 
     private suspend fun loadMovies() {
 
-        val localMovies: List<MovieWithGenres> = withContext(Dispatchers.IO) {
-            // TODO Read from DB
-            val db = AppDatabase.instance
-            return db.movieDao().getAll()
-        }
+        val localMovies: List<MovieWithGenres> = db.movieDao().getAll()
 
         if (localMovies.isNotEmpty()) {
             _movies.postValue(localMovies)
@@ -97,6 +96,7 @@ class MoviesListViewModel : ViewModel() {
             _errorMessage.postValue(remoteMoviesResult.message)
         }
     }
+
 //        val moviesResponse = tmdbApi.getNowPlaying(BuildConfig.API_KEY).results
 //
 //        return moviesResponse.map { movie ->
