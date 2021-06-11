@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi
-class MoviesListViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class MoviesListViewModelFactory(
+    private val application: Application
+) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MoviesListViewModel::class.java)) {

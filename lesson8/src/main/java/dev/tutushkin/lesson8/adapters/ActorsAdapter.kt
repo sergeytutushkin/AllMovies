@@ -37,8 +37,13 @@ class ActorsAdapter(
         fun onBind(actor: ActorEntity) {
             name.text = actor.name
             Glide.with(view.context)
-                .load(actor.picture)
-                .transform(MultiTransformation(CenterCrop(), RoundedCorners((4 * view.context.resources.displayMetrics.density).toInt())))
+                .load(actor.photo)
+                .transform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners((4 * view.context.resources.displayMetrics.density).toInt())
+                    )
+                )
                 .into(photo)
         }
     }
