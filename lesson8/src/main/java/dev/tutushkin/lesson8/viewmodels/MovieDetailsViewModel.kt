@@ -65,6 +65,7 @@ class MovieDetailsViewModel(
                 numberOfRatings = remoteMovieResult.voteCount,
                 minimumAge = if (remoteMovieResult.adult) 18 else 0,
                 runtime = remoteMovieResult.runtime,
+                year = "",
                 genres = remoteMovieResult.genres.map {
                     it.id
                 },

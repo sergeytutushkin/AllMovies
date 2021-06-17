@@ -123,18 +123,18 @@
             tools:text="Avengers: End Game" />
 
         <TextView
-            android:id="@+id/view_holder_movie_length_text"
+            android:id="@+id/view_holder_movie_year_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="start|center_vertical"
-            android:textColor="@color/movie_length"
+            android:textColor="@color/header"
             android:textSize="8sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/view_holder_movie_title_text"
             app:layout_constraintStart_toStartOf="@+id/view_holder_movie_title_text"
-            tools:text="137 MIN" />
+            tools:text="2021" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.serialization.ExperimentalSerializationApi
 
-// TODO Move runtime from list to details
 // TODO Add loader
+// TODO Add movie poster placeholder
 // TODO Add actors photo placeholder
 // TODO Add language selection
 // TODO Add save favorites

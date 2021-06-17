@@ -13,6 +13,7 @@ import dev.tutushkin.lesson8.network.NetworkModule.genres
 import dev.tutushkin.lesson8.network.NetworkModule.imagesBaseUrl
 import dev.tutushkin.lesson8.network.NetworkModule.posterSize
 import dev.tutushkin.lesson8.network.NetworkModule.tmdbApi
+import dev.tutushkin.lesson8.utils.Util
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -83,6 +84,7 @@ class MoviesListViewModel(application: Application) : ViewModel() {
                     ratings = movie.voteAverage.toFloat(),
                     numberOfRatings = movie.voteCount,
                     minimumAge = if (movie.adult) 18 else 0,
+                    year = Util.dateToYear(movie.releaseDate),
                     genres = movie.genreIds
                 )
             }

@@ -35,6 +35,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         val rating: RatingBar = view.findViewById(R.id.movies_details_rating)
         val reviews: TextView = view.findViewById(R.id.movies_details_reviews_text)
         val storyline: TextView = view.findViewById(R.id.movies_details_storyline_content_text)
+        val duration: TextView = view.findViewById(R.id.movies_details_duration_text)
         val recycler = view.findViewById<RecyclerView>(R.id.movie_details_actors_recycler)
 
         viewModel.currentMovie.observe(viewLifecycleOwner, {
@@ -47,6 +48,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
             }
             rating.rating = it.movie.ratings / 2
             reviews.text = view.context.getString(R.string.movie_details_reviews, it.movie.runtime)
+            duration.text = view.context.getString(R.string.movies_list_duration, it.movie.runtime)
             storyline.text = it.movie.overview
             Glide.with(requireContext())
                 .load(it.movie.backdrop)

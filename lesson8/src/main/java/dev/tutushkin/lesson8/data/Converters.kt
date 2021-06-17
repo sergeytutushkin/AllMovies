@@ -4,7 +4,11 @@ import androidx.room.TypeConverter
 
 class Converters {
     @TypeConverter
-    fun toListOfId(flatIdList: String): List<Int> {
+    fun toListOfId(flatIdList: String?): List<Int> {
+        if (flatIdList.isNullOrEmpty()) {
+            return emptyList()
+        }
+
         return flatIdList.split(",").map { it.toInt() }
     }
 

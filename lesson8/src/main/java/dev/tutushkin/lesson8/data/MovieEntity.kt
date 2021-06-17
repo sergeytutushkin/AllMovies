@@ -31,6 +31,9 @@ data class MovieEntity(
     @ColumnInfo(name = "minimumAge")
     val minimumAge: Int,
 
+    @ColumnInfo(name = "year")
+    val year: String,
+
     @ColumnInfo(name = "runtime")
     val runtime: Int = 0,
 

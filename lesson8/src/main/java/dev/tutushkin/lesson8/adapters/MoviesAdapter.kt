@@ -39,14 +39,14 @@ class MoviesAdapter(
         private val genre: TextView = view.findViewById(R.id.view_holder_movie_genres_text)
         private val reviews: TextView = view.findViewById(R.id.view_holder_movie_reviews_text)
         private val title: TextView = view.findViewById(R.id.view_holder_movie_title_text)
-        private val duration: TextView = view.findViewById(R.id.view_holder_movie_length_text)
+        private val year: TextView = view.findViewById(R.id.view_holder_movie_year_text)
 
         fun bind(item: MovieEntity, clickListener: MoviesListClickListener) {
             title.text = item.title
             genre.text = genres.filter {
                 item.genres.contains(it.id)
             }.joinToString { it.name }
-            duration.text = view.context.getString(R.string.movies_list_duration, item.runtime)
+            year.text = item.year
             reviews.text =
                 view.context.getString(R.string.movies_list_reviews, item.numberOfRatings)
             age.text = view.context.getString(R.string.movies_list_age, item.minimumAge)
