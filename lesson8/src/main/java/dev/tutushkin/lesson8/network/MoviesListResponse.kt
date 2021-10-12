@@ -27,6 +27,8 @@ data class ResultsItem(
     val voteCount: Int,
     @SerialName("adult")
     val adult: Boolean,
+    @SerialName("release_date")
+    val releaseDate: String,
     @SerialName("genre_ids")
     val genreIds: List<Int>
 )

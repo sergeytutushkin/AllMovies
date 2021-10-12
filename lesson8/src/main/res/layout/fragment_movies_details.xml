@@ -142,6 +142,18 @@
             tools:text="125 REVIEWS" />
 
         <TextView
+            android:id="@+id/movies_details_duration_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/movie_length"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/movies_details_rating"
+            tools:text="137 MIN" />
+
+        <TextView
             android:id="@+id/movies_details_storyline_header_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -153,7 +165,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movies_details_reviews_text" />
+            app:layout_constraintTop_toBottomOf="@+id/movies_details_duration_text" />
 
         <TextView
             android:id="@+id/movies_details_storyline_content_text"

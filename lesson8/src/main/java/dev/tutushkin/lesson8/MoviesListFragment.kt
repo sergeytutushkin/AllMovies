@@ -2,6 +2,7 @@ package dev.tutushkin.lesson8
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,12 +21,14 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+// TODO Column alignment RecyclerView
 //        val displayMetrics = DisplayMetrics()
 //            ...
 
-        val viewModelFactory = MoviesListViewModelFactory()
+        val viewModelFactory = MoviesListViewModelFactory(requireActivity().application)
 
-        val viewModel = ViewModelProvider(this, viewModelFactory).get(MoviesListViewModel::class.java)
+        val viewModel =
+            ViewModelProvider(this, viewModelFactory).get(MoviesListViewModel::class.java)
 
         val recycler = view.findViewById<RecyclerView>(R.id.movies_list_recycler)
         recycler.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -48,6 +51,10 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
         viewModel.movies.observe(viewLifecycleOwner, {
             adapter.submitList(it)
+        })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         })
     }
 

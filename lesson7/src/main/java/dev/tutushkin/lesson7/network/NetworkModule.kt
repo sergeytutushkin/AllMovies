@@ -1,7 +1,6 @@
 package dev.tutushkin.lesson7.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import dev.tutushkin.lesson7.BuildConfig
 import dev.tutushkin.lesson7.data.Genre
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -14,6 +13,7 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
+    private val baseUrl = "https://api.themoviedb.org/3/"
     var imagesBaseUrl = ""
     var genres: List<Genre> = listOf()
 
@@ -43,7 +43,7 @@ object NetworkModule {
 
     @ExperimentalSerializationApi
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
+        .baseUrl(baseUrl)
         .client(client)
         .addConverterFactory(json.asConverterFactory(contentType))
         .build()
