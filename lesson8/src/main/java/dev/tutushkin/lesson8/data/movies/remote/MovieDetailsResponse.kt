@@ -12,7 +12,7 @@ data class MovieDetailsResponse(
     @SerialName("overview")
     val overview: String,
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerialName("vote_average")
     val voteAverage: Double,
     @SerialName("vote_count")

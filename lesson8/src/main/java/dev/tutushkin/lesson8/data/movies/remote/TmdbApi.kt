@@ -19,7 +19,7 @@ interface TmdbApi {
     @GET("movie/now_playing")
     suspend fun getNowPlaying(
         @Query("api_key") apiKey: String
-    ): MoviesResponse
+    ): MovieListResponse
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(

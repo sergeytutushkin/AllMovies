@@ -1,7 +1,7 @@
 package dev.tutushkin.lesson8.data.movies.local
 
 import androidx.room.*
-import dev.tutushkin.lesson8.domain.MovieWithActors
+import dev.tutushkin.lesson8.domain.movies.models.MovieWithActors
 
 @Dao
 interface MovieDao {

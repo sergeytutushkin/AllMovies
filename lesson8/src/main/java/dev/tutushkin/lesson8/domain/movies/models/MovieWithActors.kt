@@ -1,4 +1,4 @@
-package dev.tutushkin.lesson8.domain
+package dev.tutushkin.lesson8.domain.movies.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
