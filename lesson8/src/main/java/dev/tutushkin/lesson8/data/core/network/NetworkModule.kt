@@ -1,6 +1,7 @@
 package dev.tutushkin.lesson8.data.core.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.movies.local.GenreEntity
 import dev.tutushkin.lesson8.data.movies.remote.TmdbApi
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
-    private val baseUrl = "https://api.themoviedb.org/3/"
+    //    private val baseUrl = "https://api.themoviedb.org/3/"
     var imagesBaseUrl = ""
     var genres: List<GenreEntity> = listOf()
 
@@ -44,7 +45,7 @@ object NetworkModule {
 
     @ExperimentalSerializationApi
     private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(client)
         .addConverterFactory(json.asConverterFactory(contentType))
         .build()

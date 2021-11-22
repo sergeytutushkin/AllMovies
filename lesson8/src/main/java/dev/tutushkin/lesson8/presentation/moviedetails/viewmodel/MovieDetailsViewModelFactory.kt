@@ -11,7 +11,7 @@ class MovieDetailsViewModelFactory(
     private val id: Int
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailsViewModel::class.java)) {
             return MovieDetailsViewModel(application, id) as T
         }
