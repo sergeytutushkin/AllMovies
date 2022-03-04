@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TmdbApi {
+interface MoviesApi {
 
     @GET("configuration")
     suspend fun getConfiguration(

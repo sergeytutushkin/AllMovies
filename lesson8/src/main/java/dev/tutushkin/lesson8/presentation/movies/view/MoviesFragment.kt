@@ -1,5 +1,6 @@
 package dev.tutushkin.lesson8.presentation.movies.view
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.adapters.MoviesAdapter
-import dev.tutushkin.lesson8.adapters.MoviesClickListener
 import dev.tutushkin.lesson8.presentation.moviedetails.view.MovieDetailsFragment
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModel
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModelFactory
@@ -29,11 +28,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
         val viewModelFactory = MoviesViewModelFactory(requireActivity().application)
 
-        val viewModel =
-            ViewModelProvider(this, viewModelFactory).get(MoviesViewModel::class.java)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[MoviesViewModel::class.java]
 
         val recycler = view.findViewById<RecyclerView>(R.id.movies_list_recycler)
-        recycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        val spanCount = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> 3
+            else -> 2
+        }
+        recycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
         val listener = object : MoviesClickListener {
             override fun onItemClick(movieId: Int) {

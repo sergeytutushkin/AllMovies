@@ -9,8 +9,8 @@ data class MovieListDto(
     val id: Int,
     @SerialName("title")
     val title: String,
-    @SerialName("overview")
-    val overview: String,
+//    @SerialName("overview")
+//    val overview: String,
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("vote_average")

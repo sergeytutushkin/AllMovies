@@ -2,8 +2,9 @@ package dev.tutushkin.lesson8.data.core.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.movies.local.GenreEntity
-import dev.tutushkin.lesson8.data.movies.remote.TmdbApi
+import dev.tutushkin.lesson8.data.movies.remote.MoviesApi
+import dev.tutushkin.lesson8.domain.movies.models.Configuration
+import dev.tutushkin.lesson8.domain.movies.models.Genre
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,16 +14,19 @@ import retrofit2.Retrofit
 import retrofit2.create
 import java.util.concurrent.TimeUnit
 
+// TODO Implement Api Key through the interceptor
+// TODO Get off singleton
 object NetworkModule {
 
     //    private val baseUrl = "https://api.themoviedb.org/3/"
-    var imagesBaseUrl = ""
-    var genres: List<GenreEntity> = listOf()
+//    var imagesBaseUrl = ""
+    var genres: List<Genre> = listOf()
 
     // TODO Optimize image sizes dynamically based on a display
-    var posterSize = "w342"
-    var backdropSize = "w780"
-    var profileSize = "w185"
+//    var posterSize = "w342"
+//    var backdropSize = "w780"
+//    var profileSize = "w185"
+    var configApi: Configuration = Configuration()
 
     private val json = Json {
         prettyPrint = true
@@ -51,5 +55,5 @@ object NetworkModule {
         .build()
 
     @ExperimentalSerializationApi
-    val tmdbApi: TmdbApi = retrofit.create()
+    val moviesApi: MoviesApi = retrofit.create()
 }

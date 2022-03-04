@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface ActorDao {
+interface ActorsDao {
     @Query("SELECT * FROM actors")
     fun getAll(): List<ActorEntity>
 

@@ -15,6 +15,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 // TODO Add info about actors (new screen)
 // TODO Use Navigation
 // TODO Use ViewBinding
+// TODO Use DI
 // TODO Add repositories and transfer data processing logic to them
 // TODO Add column alignment to the RecyclerView
 // TODO Add tests

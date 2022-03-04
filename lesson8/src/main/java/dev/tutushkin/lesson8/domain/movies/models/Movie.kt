@@ -1,6 +1,6 @@
 package dev.tutushkin.lesson8.domain.movies.models
 
-data class Movies(
+data class Movie(
     val id: Long = 0,
     val title: String = "",
     val overview: String = "",

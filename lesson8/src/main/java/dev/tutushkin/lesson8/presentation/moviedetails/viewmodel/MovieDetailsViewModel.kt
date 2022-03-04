@@ -9,8 +9,8 @@ import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.core.db.MoviesDb
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.backdropSize
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.imagesBaseUrl
+import dev.tutushkin.lesson8.data.core.network.NetworkModule.moviesApi
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.profileSize
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.tmdbApi
 import dev.tutushkin.lesson8.data.movies.local.ActorEntity
 import dev.tutushkin.lesson8.data.movies.local.MovieEntity
 import dev.tutushkin.lesson8.domain.movies.models.MovieWithActors
@@ -42,17 +42,17 @@ class MovieDetailsViewModel(
     private suspend fun loadMovie(id: Int) {
         viewModelScope.launch {
             val localMovie = withContext(Dispatchers.IO) {
-                db.movieDao().getMovieWithActors(id)
+                db.moviesDao().getMovieDetails(id)
             }
 
             _currentMovie.postValue(localMovie)
 
             val remoteMovieResult = withContext(Dispatchers.IO) {
-                tmdbApi.getMovieDetails(id, BuildConfig.API_KEY)
+                moviesApi.getMovieDetails(id, BuildConfig.API_KEY)
             }
 
             val remoteActorsResult = withContext(Dispatchers.IO) {
-                tmdbApi.getActors(id, BuildConfig.API_KEY).cast
+                moviesApi.getActors(id, BuildConfig.API_KEY).cast
             }
 
             val newMovieEntity = MovieEntity(
@@ -83,8 +83,8 @@ class MovieDetailsViewModel(
             }
 
             withContext(Dispatchers.IO) {
-                db.movieDao().insert(newMovieEntity)
-                db.actorDao().insertAll(newActorsEntity)
+                db.moviesDao().insert(newMovieEntity)
+                db.actorsDao().insertAll(newActorsEntity)
             }
 
             _currentMovie.postValue(MovieWithActors(newMovieEntity, newActorsEntity))
