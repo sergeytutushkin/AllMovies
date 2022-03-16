@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieListDto(
     @SerialName("id")
-    val id: Int,
+    val id: Long,
     @SerialName("title")
     val title: String,
 //    @SerialName("overview")
@@ -14,7 +14,7 @@ data class MovieListDto(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("vote_average")
-    val voteAverage: Double,
+    val voteAverage: Float,
     @SerialName("vote_count")
     val voteCount: Int,
     @SerialName("adult")

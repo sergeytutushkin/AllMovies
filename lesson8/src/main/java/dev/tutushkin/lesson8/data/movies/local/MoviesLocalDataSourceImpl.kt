@@ -1,7 +1,5 @@
 package dev.tutushkin.lesson8.data.movies.local
 
-import dev.tutushkin.lesson8.domain.movies.models.MovieWithActors
-
 class MoviesLocalDataSourceImpl(
     private val moviesDao: MoviesDao,
     private val configurationDao: ConfigurationDao
@@ -17,7 +15,7 @@ class MoviesLocalDataSourceImpl(
     override suspend fun getNowPlaying(): List<MovieEntity> =
         moviesDao.getNowPlaying()
 
-    override suspend fun getMovieDetails(id: Int): MovieWithActors =
+    override suspend fun getMovieDetails(id: Int): MovieEntity =
         moviesDao.getMovieDetails(id)
 
     override suspend fun insert(movie: MovieEntity): Long =

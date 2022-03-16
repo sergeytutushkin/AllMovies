@@ -2,7 +2,7 @@ package dev.tutushkin.lesson8.data.movies
 
 import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.core.network.NetworkModule
-import dev.tutushkin.lesson8.data.movies.local.MovieEntity
+import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
 import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSource
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
@@ -44,9 +44,10 @@ class MoviesRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNowPlaying(apiKey: String): List<MovieWithGenres> {
+    override suspend fun getNowPlaying(apiKey: String): List<MovieWithGenres> =
+        withContext(ioDispatcher) {
 
-        // TODO Add local movies list load if it exists
+            // TODO Add local movies list load if it exists
 //        val localMovies = moviesLocalDataSource.getNowPlaying()
 
 //        val localMovies = withContext(Dispatchers.IO) {
@@ -63,36 +64,33 @@ class MoviesRepositoryImpl(
 //        }
 
         nowPlayingResponse.results.map {
-            Movie(
+            MovieWithGenres(
                 id = it.id,
                 title = it.title,
-                overview = it.overview,
-                poster = it.posterPath,
-                backdrop = "",
+                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${it.posterPath}",
                 ratings = it.voteAverage,
                 numberOfRatings = it.voteCount,
-                minimumAge = it.adult,
-                year = it.releaseDate,
-                runtime = "",
-                genres = it.genreIds,
-                actors =
-            )
+                minimumAge = if (it.adult) 18 else 0,
+                year = Util.dateToYear(it.releaseDate),
+                genres = genres.filter {
+                    movie.genreIds.contains(it.id)
+                })
         }
 //            if (remoteMoviesResult is _Result.Success) {
-        val newMovies = remoteMoviesResult.results.map { movie ->
-            MovieEntity(
-                id = movie.id,
-                title = movie.title,
-                overview = movie.overview,
-                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-                backdrop = "",
-                ratings = movie.voteAverage.toFloat(),
-                numberOfRatings = movie.voteCount,
-                minimumAge = if (movie.adult) 18 else 0,
-                year = Util.dateToYear(movie.releaseDate),
-                genres = movie.genreIds
-            )
-        }
+//        val newMovies = remoteMoviesResult.results.map { movie ->
+//            MovieEntity(
+//                id = movie.id,
+//                title = movie.title,
+//                overview = movie.overview,
+//                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+//                backdrop = "",
+//                ratings = movie.voteAverage.toFloat(),
+//                numberOfRatings = movie.voteCount,
+//                minimumAge = if (movie.adult) 18 else 0,
+//                year = Util.dateToYear(movie.releaseDate),
+//                genres = movie.genreIds
+//            )
+//        }
 
 //        withContext(Dispatchers.IO) {
 //            db.movieDao().insertAll(newMovies)
