@@ -58,24 +58,26 @@ class MoviesRepositoryImpl(
 //            _movies.postValue(localMovies)
 //        }
 
-        val nowPlayingResponse = moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
+            val nowPlayingResponse = moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
 //        val remoteMoviesResult = withContext(Dispatchers.IO) {
 //            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
 //        }
 
-        nowPlayingResponse.results.map {
-            MovieWithGenres(
-                id = it.id,
-                title = it.title,
-                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${it.posterPath}",
-                ratings = it.voteAverage,
-                numberOfRatings = it.voteCount,
-                minimumAge = if (it.adult) 18 else 0,
-                year = Util.dateToYear(it.releaseDate),
-                genres = genres.filter {
-                    movie.genreIds.contains(it.id)
-                })
-        }
+            nowPlayingResponse.results.map { movie ->
+                MovieWithGenres(
+                    Movie(
+                        id = movie.id,
+                        title = movie.title,
+                        poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+                        ratings = movie.voteAverage,
+                        numberOfRatings = movie.voteCount,
+                        minimumAge = if (movie.adult) 18 else 0,
+                        year = Util.dateToYear(movie.releaseDate)
+                    ),
+                    genres = genres.filter {
+                        movie.genreIds.contains(it.id)
+                    })
+            }
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(
@@ -100,7 +102,7 @@ class MoviesRepositoryImpl(
 //            } else if (remoteMoviesResult is _Result.Error) {
 //                _errorMessage.postValue(remoteMoviesResult.message)
 //            }
-    }
+        }
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetails {
         TODO("Not yet implemented")
