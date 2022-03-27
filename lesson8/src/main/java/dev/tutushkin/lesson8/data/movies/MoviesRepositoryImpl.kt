@@ -44,7 +44,7 @@ class MoviesRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNowPlaying(apiKey: String): List<MovieWithGenres> =
+    override suspend fun getNowPlaying(apiKey: String): List<MovieList> =
         withContext(ioDispatcher) {
 
             // TODO Add local movies list load if it exists
@@ -64,19 +64,18 @@ class MoviesRepositoryImpl(
 //        }
 
             nowPlayingResponse.results.map { movie ->
-                MovieWithGenres(
-                    Movie(
-                        id = movie.id,
-                        title = movie.title,
-                        poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-                        ratings = movie.voteAverage,
-                        numberOfRatings = movie.voteCount,
-                        minimumAge = if (movie.adult) 18 else 0,
-                        year = Util.dateToYear(movie.releaseDate)
-                    ),
+                MovieList(
+                    id = movie.id,
+                    title = movie.title,
+                    poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+                    ratings = movie.voteAverage,
+                    numberOfRatings = movie.voteCount,
+                    minimumAge = if (movie.adult) 18 else 0,
+                    year = Util.dateToYear(movie.releaseDate),
                     genres = genres.filter {
                         movie.genreIds.contains(it.id)
-                    })
+                    }.joinToString(transform = Genre::name)
+                )
             }
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->

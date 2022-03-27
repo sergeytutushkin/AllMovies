@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.core.network.NetworkModule
-import dev.tutushkin.lesson8.data.movies.local.MovieEntity
+import dev.tutushkin.lesson8.domain.movies.models.MovieList
 
 class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -20,15 +19,17 @@ class MovieViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     private val title: TextView = view.findViewById(R.id.view_holder_movie_title_text)
     private val year: TextView = view.findViewById(R.id.view_holder_movie_year_text)
 
-    fun bind(item: MovieEntity, clickListener: MoviesClickListener) {
+    fun bind(item: MovieList, clickListener: MoviesClickListener) {
         title.text = item.title
-        genre.text = NetworkModule.genres.filter {
-            item.genres.contains(it.id)
-        }.joinToString { it.name }
+//        genre.text = NetworkModule.genres.filter {
+//            item.genres.contains(it.id)
+//        }.joinToString { it.name }
+        genre.text = item.genres
         year.text = item.year
         reviews.text =
             view.context.getString(R.string.movies_list_reviews, item.numberOfRatings)
-        age.text = view.context.getString(R.string.movies_list_age, item.minimumAge)
+//        age.text = view.context.getString(R.string.movies_list_age, item.minimumAge)
+        age.text = item.minimumAge
         rating.rating = item.ratings / 2
         Glide.with(view.context)
             .load(item.poster)

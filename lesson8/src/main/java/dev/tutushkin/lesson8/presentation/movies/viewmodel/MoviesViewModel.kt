@@ -8,15 +8,15 @@ import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
-import dev.tutushkin.lesson8.domain.movies.models.Movie
+import dev.tutushkin.lesson8.utils.Result
 import kotlinx.coroutines.launch
 
 class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>> = _movies
+    private val _movies = MutableLiveData<List<MoviesResult>>()
+    val movies: LiveData<List<MoviesResult>> = _movies
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
@@ -98,4 +98,11 @@ class MoviesViewModel(
 ////            }
 //        }
 //    }
+
+    private suspend fun handleMoviesList(): MoviesResult {
+        return when (val moviesResult = moviesRepository.getNowPlaying(BuildConfig.API_KEY)) {
+            is Result.Error -> MoviesResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
+            is Result.Success -> MoviesResult.SuccessResult(moviesResult.result)
+        }
+    }
 }

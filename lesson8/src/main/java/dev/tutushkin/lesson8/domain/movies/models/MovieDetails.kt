@@ -11,6 +11,6 @@ data class MovieDetails(
     val minimumAge: Int,
     val year: String,   // TODO Add to screen
     val runtime: Int = 0,
-    val genres: List<Int> = listOf(),
-    val actors: List<Int> = listOf()
+    val genres: String,
+    val actors: List<Actor> = listOf()
 )

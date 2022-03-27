@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.movies.local.MovieEntity
+import dev.tutushkin.lesson8.domain.movies.models.MovieList
 
 class MoviesAdapter(
     private val clickListener: MoviesClickListener
-) : ListAdapter<MovieEntity, MovieViewHolder>(
+) : ListAdapter<MovieList, MovieViewHolder>(
     MoviesListDiffCallback()
 ) {
 
@@ -25,16 +25,16 @@ class MoviesAdapter(
     }
 }
 
-class MoviesListDiffCallback : DiffUtil.ItemCallback<MovieEntity>() {
-    override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+class MoviesListDiffCallback : DiffUtil.ItemCallback<MovieList>() {
+    override fun areItemsTheSame(oldItem: MovieList, newItem: MovieList): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+    override fun areContentsTheSame(oldItem: MovieList, newItem: MovieList): Boolean {
         return oldItem == newItem
     }
 }
 
 interface MoviesClickListener {
-    fun onItemClick(movieId: Int)
+    fun onItemClick(movieId: Long)
 }

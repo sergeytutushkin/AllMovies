@@ -38,9 +38,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         recycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
         val listener = object : MoviesClickListener {
-            override fun onItemClick(movieId: Int) {
+            override fun onItemClick(movieId: Long) {
                 val bundle = Bundle()
-                bundle.putInt(MOVIES_KEY, movieId)
+                bundle.putLong(MOVIES_KEY, movieId)
                 val detailsFragment = MovieDetailsFragment()
                 detailsFragment.arguments = bundle
                 requireActivity().supportFragmentManager.beginTransaction()
@@ -53,13 +53,41 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         val adapter = MoviesAdapter(listener)
         recycler.adapter = adapter
 
-        viewModel.movies.observe(viewLifecycleOwner, {
+        viewModel.movies.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-        })
+        }
 
-        viewModel.errorMessage.observe(viewLifecycleOwner, {
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-        })
+        }
     }
+
+//    private fun handleMoviesList(state: MoviesResult) {
+//        when (state) {
+//            is MoviesResult.SuccessResult -> {
+//                hideLoading()
+//                binding.moviesPlaceholder.toGone()
+//                binding.moviesList.toVisible()
+//                moviesAdapter.submitList(state.result)
+//            }
+//            is ErrorResult -> {
+//                hideLoading()
+//                hideAndSetEmptyList()
+//                binding.moviesPlaceholder.setText(R.string.search_error)
+//                Timber.e("Something went wrong.", state.e)
+//            }
+//            is EmptyResult -> {
+//                hideLoading()
+//                hideAndSetEmptyList()
+//                binding.moviesPlaceholder.setText(R.string.empty_result)
+//            }
+//            is EmptyQuery -> {
+//                hideLoading()
+//                hideAndSetEmptyList()
+//                binding.moviesPlaceholder.setText(R.string.movies_placeholder)
+//            }
+//            is Loading -> showLoading()
+//        }
+//    }
 
 }
