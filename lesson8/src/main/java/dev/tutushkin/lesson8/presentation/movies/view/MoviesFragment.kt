@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.tutushkin.lesson8.R
 import dev.tutushkin.lesson8.presentation.moviedetails.view.MovieDetailsFragment
+import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesResult
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModel
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModelFactory
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -62,32 +63,27 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-//    private fun handleMoviesList(state: MoviesResult) {
-//        when (state) {
-//            is MoviesResult.SuccessResult -> {
-//                hideLoading()
-//                binding.moviesPlaceholder.toGone()
-//                binding.moviesList.toVisible()
-//                moviesAdapter.submitList(state.result)
-//            }
-//            is ErrorResult -> {
-//                hideLoading()
-//                hideAndSetEmptyList()
-//                binding.moviesPlaceholder.setText(R.string.search_error)
-//                Timber.e("Something went wrong.", state.e)
-//            }
-//            is EmptyResult -> {
-//                hideLoading()
-//                hideAndSetEmptyList()
-//                binding.moviesPlaceholder.setText(R.string.empty_result)
-//            }
-//            is EmptyQuery -> {
-//                hideLoading()
-//                hideAndSetEmptyList()
-//                binding.moviesPlaceholder.setText(R.string.movies_placeholder)
-//            }
-//            is Loading -> showLoading()
-//        }
-//    }
+    private fun handleMoviesList(state: MoviesResult) {
+        when (state) {
+            is MoviesResult.SuccessResult -> {
+                hideLoading()
+                recycler.moviesAdapter.submitList(state.result)
+            }
+            is MoviesResult.ErrorResult -> {
+                hideLoading()
+                binding.moviesPlaceholder.setText(R.string.search_error)
+                Timber.e("Something went wrong.", state.e)
+            }
+            is MoviesResult.Loading -> showLoading()
+        }
+    }
+
+    private fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    private fun hideLoading() {
+        TODO("Not yet implemented")
+    }
 
 }

@@ -15,8 +15,8 @@ class MoviesViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    private val _movies = MutableLiveData<List<MoviesResult>>()
-    val movies: LiveData<List<MoviesResult>> = _movies
+    private val _movies = MutableLiveData<MoviesResult>()
+    val movies: LiveData<MoviesResult> = _movies
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
@@ -37,7 +37,7 @@ class MoviesViewModel(
             genres = moviesRepository.getGenres(BuildConfig.API_KEY)
 
 //            loadMovies()
-            _movies.postValue(moviesRepository.getNowPlaying(BuildConfig.API_KEY))
+            _movies.postValue(handleMoviesNowPlaying())
         }
     }
 
@@ -99,7 +99,7 @@ class MoviesViewModel(
 //        }
 //    }
 
-    private suspend fun handleMoviesList(): MoviesResult {
+    private suspend fun handleMoviesNowPlaying(): MoviesResult {
         return when (val moviesResult = moviesRepository.getNowPlaying(BuildConfig.API_KEY)) {
             is Result.Error -> MoviesResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
             is Result.Success -> MoviesResult.SuccessResult(moviesResult.result)
