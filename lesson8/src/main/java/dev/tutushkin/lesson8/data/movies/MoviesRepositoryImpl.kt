@@ -7,6 +7,7 @@ import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSource
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
 import dev.tutushkin.lesson8.domain.movies.models.*
+import dev.tutushkin.lesson8.utils.Result
 import dev.tutushkin.lesson8.utils.Util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -44,7 +45,7 @@ class MoviesRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNowPlaying(apiKey: String): List<MovieList> =
+    override suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>, Throwable> =
         withContext(ioDispatcher) {
 
             // TODO Add local movies list load if it exists
@@ -63,7 +64,7 @@ class MoviesRepositoryImpl(
 //            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
 //        }
 
-            nowPlayingResponse.results.map { movie ->
+            Result.Success(result = nowPlayingResponse.results.map { movie ->
                 MovieList(
                     id = movie.id,
                     title = movie.title,
@@ -76,7 +77,7 @@ class MoviesRepositoryImpl(
                         movie.genreIds.contains(it.id)
                     }.joinToString(transform = Genre::name)
                 )
-            }
+            })
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(

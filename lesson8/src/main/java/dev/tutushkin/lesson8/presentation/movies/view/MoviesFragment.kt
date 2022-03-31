@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dev.tutushkin.lesson8.R
+import dev.tutushkin.lesson8.databinding.FragmentMoviesListBinding
 import dev.tutushkin.lesson8.presentation.moviedetails.view.MovieDetailsFragment
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesResult
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModel
@@ -20,6 +20,13 @@ const val MOVIES_KEY = "MOVIES"
 @ExperimentalSerializationApi
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
+    private val viewModel by viewModels<MoviesViewModel> { MoviesViewModelFactory(requireActivity().application) }
+
+    private var _binding: FragmentMoviesListBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var adapter: MoviesAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -27,16 +34,18 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 //        val displayMetrics = DisplayMetrics()
 //            ...
 
-        val viewModelFactory = MoviesViewModelFactory(requireActivity().application)
+//        val viewModelFactory = MoviesViewModelFactory(requireActivity().application)
 
-        val viewModel = ViewModelProvider(this, viewModelFactory)[MoviesViewModel::class.java]
+//        val viewModel = ViewModelProvider(this, viewModelFactory)[MoviesViewModel::class.java]
 
-        val recycler = view.findViewById<RecyclerView>(R.id.movies_list_recycler)
+        _binding = FragmentMoviesListBinding.bind(view)
+
+//        val recycler = view.findViewById<RecyclerView>(R.id.movies_list_recycler)
         val spanCount = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> 3
             else -> 2
         }
-        recycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        binding.moviesListRecycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
         val listener = object : MoviesClickListener {
             override fun onItemClick(movieId: Long) {
@@ -51,12 +60,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
             }
         }
 
-        val adapter = MoviesAdapter(listener)
-        recycler.adapter = adapter
+        adapter = MoviesAdapter(listener)
+        binding.moviesListRecycler.adapter = adapter
 
-        viewModel.movies.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        viewModel.movies.observe(viewLifecycleOwner, ::handleMoviesList)
 
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
@@ -67,12 +74,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         when (state) {
             is MoviesResult.SuccessResult -> {
                 hideLoading()
-                recycler.moviesAdapter.submitList(state.result)
+                adapter.submitList(state.result)
             }
             is MoviesResult.ErrorResult -> {
                 hideLoading()
-                binding.moviesPlaceholder.setText(R.string.search_error)
-                Timber.e("Something went wrong.", state.e)
+                Toast.makeText(requireContext(), state.e.message, Toast.LENGTH_SHORT).show()
             }
             is MoviesResult.Loading -> showLoading()
         }
@@ -86,4 +92,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         TODO("Not yet implemented")
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }
