@@ -8,7 +8,7 @@ interface MoviesRemoteDataSource {
 
     suspend fun getGenres(apiKey: String): GenresResponse
 
-    suspend fun getNowPlaying(apiKey: String): Result<List<MovieListResponse>, Throwable>
+    suspend fun getNowPlaying(apiKey: String): Result<List<MovieListDto>, Throwable>
 
     suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetailsResponse
 

@@ -1,5 +1,7 @@
 package dev.tutushkin.lesson8.data.movies.remote
 
+import dev.tutushkin.lesson8.utils.Result
+
 class MoviesRemoteDataSourceImpl(
     private val moviesApi: MoviesApi
 ) : MoviesRemoteDataSource {
@@ -10,8 +12,9 @@ class MoviesRemoteDataSourceImpl(
     override suspend fun getGenres(apiKey: String): GenresResponse =
         moviesApi.getGenres(apiKey)
 
-    override suspend fun getNowPlaying(apiKey: String): MovieListResponse =
-        moviesApi.getNowPlaying(apiKey)
+    override suspend fun getNowPlaying(apiKey: String): Result<List<MovieListDto>, Throwable> =
+        // TODO Add check for errors
+        Result.Success(moviesApi.getNowPlaying(apiKey).results)
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetailsResponse =
         moviesApi.getMovieDetails(movieId, apiKey)

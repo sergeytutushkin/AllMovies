@@ -59,12 +59,13 @@ class MoviesRepositoryImpl(
 //            _movies.postValue(localMovies)
 //        }
 
-            val nowPlayingResponse = moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
+            val nowPlayingResponse: Result<List<MovieList>, Throwable> =
+                moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY).runCatching { }
 //        val remoteMoviesResult = withContext(Dispatchers.IO) {
 //            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
 //        }
 
-            Result.Success(result = nowPlayingResponse.results.map { movie ->
+            nowPlayingResponse.result.map { movie ->
                 MovieList(
                     id = movie.id,
                     title = movie.title,
@@ -77,7 +78,9 @@ class MoviesRepositoryImpl(
                         movie.genreIds.contains(it.id)
                     }.joinToString(transform = Genre::name)
                 )
-            })
+            }
+
+            Result.Success()
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(
