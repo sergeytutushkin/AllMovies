@@ -7,7 +7,6 @@ import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSource
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
 import dev.tutushkin.lesson8.domain.movies.models.*
-import dev.tutushkin.lesson8.utils.Result
 import dev.tutushkin.lesson8.utils.Util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -45,7 +44,7 @@ class MoviesRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>, Throwable> =
+    override suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>> =
         withContext(ioDispatcher) {
 
             // TODO Add local movies list load if it exists
@@ -59,13 +58,32 @@ class MoviesRepositoryImpl(
 //            _movies.postValue(localMovies)
 //        }
 
-            val nowPlayingResponse: Result<List<MovieList>, Throwable> =
-                moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY).runCatching { }
+            moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
+                .mapCatching {
+                    it.map {
+                        { movie ->
+                            MovieList(
+                                id = movie.id,
+                                title = movie.title,
+                                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+                                ratings = movie.voteAverage,
+                                numberOfRatings = movie.voteCount,
+                                minimumAge = if (movie.adult) 18 else 0,
+                                year = Util.dateToYear(movie.releaseDate),
+                                genres = genres.filter {
+                                    movie.genreIds.contains(it.id)
+                                }.joinToString(transform = Genre::name)
+                            )
+
+                        }
+                    }
+                }
+
 //        val remoteMoviesResult = withContext(Dispatchers.IO) {
 //            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
 //        }
 
-            nowPlayingResponse.result.map { movie ->
+            /*nowPlayingResponse.result.map { movie ->
                 MovieList(
                     id = movie.id,
                     title = movie.title,
@@ -80,7 +98,7 @@ class MoviesRepositoryImpl(
                 )
             }
 
-            Result.Success()
+            Result.Success()*/
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(
