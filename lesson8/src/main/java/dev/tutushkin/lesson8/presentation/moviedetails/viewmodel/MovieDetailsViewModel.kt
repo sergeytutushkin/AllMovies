@@ -5,17 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.core.db.MoviesDb
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.backdropSize
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.imagesBaseUrl
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.moviesApi
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.profileSize
-import dev.tutushkin.lesson8.data.movies.local.ActorEntity
-import dev.tutushkin.lesson8.data.movies.local.MovieEntity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi
@@ -24,8 +15,8 @@ class MovieDetailsViewModel(
     id: Int
 ) : ViewModel() {
 
-    private val _currentMovie = MutableLiveData<MovieWithActors>()
-    val currentMovie: LiveData<MovieWithActors> = _currentMovie
+    private val _currentMovie = MutableLiveData<MovieDetailsResult>()
+    val currentMovie: LiveData<MovieDetailsResult> = _currentMovie
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
@@ -39,7 +30,7 @@ class MovieDetailsViewModel(
     }
 
     private suspend fun loadMovie(id: Int) {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             val localMovie = withContext(Dispatchers.IO) {
                 db.moviesDao().getMovieDetails(id)
             }
@@ -86,8 +77,8 @@ class MovieDetailsViewModel(
                 db.actorsDao().insertAll(newActorsEntity)
             }
 
-            _currentMovie.postValue(MovieWithActors(newMovieEntity, newActorsEntity))
-        }
+            _currentMovie.postValue(MovieDetailsResult(newMovieEntity, newActorsEntity))
+        }*/
     }
 
 }

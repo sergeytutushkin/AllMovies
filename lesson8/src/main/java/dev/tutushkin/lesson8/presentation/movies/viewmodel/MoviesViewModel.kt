@@ -8,7 +8,6 @@ import dev.tutushkin.lesson8.BuildConfig
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
-import dev.tutushkin.lesson8.utils.Result
 import kotlinx.coroutines.launch
 
 class MoviesViewModel(
@@ -100,9 +99,11 @@ class MoviesViewModel(
 //    }
 
     private suspend fun handleMoviesNowPlaying(): MoviesResult {
-        return when (val moviesResult = moviesRepository.getNowPlaying(BuildConfig.API_KEY)) {
-            is Result.Error -> MoviesResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
-            is Result.Success -> MoviesResult.SuccessResult(moviesResult.result)
-        }
+        val moviesResult = moviesRepository.getNowPlaying(BuildConfig.API_KEY)
+
+        return if (moviesResult.isSuccess)
+            MoviesResult.SuccessResult(moviesResult.getOrThrow())
+        else
+            MoviesResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
     }
 }

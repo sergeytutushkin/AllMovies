@@ -7,11 +7,8 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
 import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsViewModel
 import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsViewModelFactory
 import dev.tutushkin.lesson8.presentation.movies.view.MOVIES_KEY
@@ -39,7 +36,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         val duration: TextView = view.findViewById(R.id.movies_details_duration_text)
         val recycler = view.findViewById<RecyclerView>(R.id.movie_details_actors_recycler)
 
-        viewModel.currentMovie.observe(viewLifecycleOwner, {
+        /*viewModel.currentMovie.observe(viewLifecycleOwner, {
             age.text = view.context.getString(R.string.movies_list_age, it.movie.minimumAge)
             title.text = it.movie.title
             genre.text = genres.filter { genreEntity ->
@@ -58,7 +55,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
             recycler.layoutManager =
                 LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             recycler.adapter = ActorsAdapter(it.actors)
-        })
+        })*/
 
         view.findViewById<TextView>(R.id.movies_details_back_text).setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()

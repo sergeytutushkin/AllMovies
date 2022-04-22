@@ -58,47 +58,78 @@ class MoviesRepositoryImpl(
 //            _movies.postValue(localMovies)
 //        }
 
-            moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
-                .mapCatching {
-                    it.map {
-                        { movie ->
-                            MovieList(
-                                id = movie.id,
-                                title = movie.title,
-                                poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-                                ratings = movie.voteAverage,
-                                numberOfRatings = movie.voteCount,
-                                minimumAge = if (movie.adult) 18 else 0,
-                                year = Util.dateToYear(movie.releaseDate),
-                                genres = genres.filter {
-                                    movie.genreIds.contains(it.id)
-                                }.joinToString(transform = Genre::name)
-                            )
-
-                        }
+            val listDto: List<MovieList> =
+                moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
+                    .getOrThrow()
+                    .map { movie ->
+                        MovieList(
+                            id = movie.id,
+                            title = movie.title,
+                            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+                            ratings = movie.voteAverage,
+                            numberOfRatings = movie.voteCount,
+                            minimumAge = if (movie.adult) "18+" else "0+",
+                            year = Util.dateToYear(movie.releaseDate),
+                            genres = genres.filter {
+                                movie.genreIds.contains(it.id)
+                            }.joinToString(transform = Genre::name)
+                        )
                     }
-                }
 
-//        val remoteMoviesResult = withContext(Dispatchers.IO) {
-//            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
-//        }
 
-            /*nowPlayingResponse.result.map { movie ->
+            return@withContext Result.success(listDto)
+            /*.map { movie ->
                 MovieList(
                     id = movie.id,
                     title = movie.title,
                     poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
                     ratings = movie.voteAverage,
                     numberOfRatings = movie.voteCount,
-                    minimumAge = if (movie.adult) 18 else 0,
+                    minimumAge = if (movie.adult) "18+" else "0+",
                     year = Util.dateToYear(movie.releaseDate),
                     genres = genres.filter {
                         movie.genreIds.contains(it.id)
                     }.joinToString(transform = Genre::name)
-                )
-            }
+                ) }
 
-            Result.Success()*/
+    listDto.getOrThrow().ma
+    Result.success(listDto.getOrDefault(listOf()).map { movie ->
+        MovieList(
+            id = movie.id,
+            title = movie.title,
+            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+            ratings = movie.voteAverage,
+            numberOfRatings = movie.voteCount,
+            minimumAge = if (movie.adult) "18+" else "0+",
+            year = Util.dateToYear(movie.releaseDate),
+            genres = genres.filter {
+                movie.genreIds.contains(it.id)
+            }.joinToString(transform = Genre::name)
+        )
+    }
+    )*/
+        }
+
+//        val remoteMoviesResult = withContext(Dispatchers.IO) {
+//            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
+//        }
+
+    /*nowPlayingResponse.result.map { movie ->
+        MovieList(
+            id = movie.id,
+            title = movie.title,
+            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+            ratings = movie.voteAverage,
+            numberOfRatings = movie.voteCount,
+            minimumAge = if (movie.adult) 18 else 0,
+            year = Util.dateToYear(movie.releaseDate),
+            genres = genres.filter {
+                movie.genreIds.contains(it.id)
+            }.joinToString(transform = Genre::name)
+        )
+    }
+
+    Result.Success()*/
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(
@@ -123,7 +154,7 @@ class MoviesRepositoryImpl(
 //            } else if (remoteMoviesResult is _Result.Error) {
 //                _errorMessage.postValue(remoteMoviesResult.message)
 //            }
-        }
+
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetails {
         TODO("Not yet implemented")

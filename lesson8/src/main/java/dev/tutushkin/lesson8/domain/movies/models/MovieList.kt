@@ -8,7 +8,7 @@ data class MovieList(
 //    val backdrop: String = "",
     val ratings: Float = 0.0f,
     val numberOfRatings: Int = 0,
-    val minimumAge: String = "",
+    val minimumAge: String = "",    //TODO Correct values
     val year: String = "",
     val genres: String = ""
 //    val runtime: Int = 0,   // TODO Add?
