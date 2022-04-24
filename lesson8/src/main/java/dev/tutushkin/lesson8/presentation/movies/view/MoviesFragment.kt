@@ -16,6 +16,7 @@ import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.lesson8.databinding.FragmentMoviesListBinding
 import dev.tutushkin.lesson8.presentation.moviedetails.view.MovieDetailsFragment
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesResult
+import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModel
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -25,11 +26,6 @@ const val MOVIES_KEY = "MOVIES"
 @ExperimentalSerializationApi
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-    private val db: MoviesDb = MoviesDb.getDatabase(requireActivity().application)
-    private val remoteDataSource = MoviesRemoteDataSourceImpl(moviesApi)
-    private val localDataSource = MoviesLocalDataSourceImpl(db.moviesDao(), db.configurationDao())
-    private val repository = MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-    private val viewModel by viewModels { MoviesViewModelFactory(repository) }
 //    private val viewModel: MoviesViewModel by viewModels()
 
     private var _binding: FragmentMoviesListBinding? = null
@@ -47,6 +43,13 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 //        val viewModelFactory = MoviesViewModelFactory(requireActivity().application)
 
 //        val viewModel = ViewModelProvider(this, viewModelFactory)[MoviesViewModel::class.java]
+
+        val db = MoviesDb.getDatabase(requireActivity().application)
+        val remoteDataSource = MoviesRemoteDataSourceImpl(moviesApi)
+        val localDataSource = MoviesLocalDataSourceImpl(db.moviesDao(), db.configurationDao())
+        val repository =
+            MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
+        val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory(repository) }
 
         _binding = FragmentMoviesListBinding.bind(view)
 
