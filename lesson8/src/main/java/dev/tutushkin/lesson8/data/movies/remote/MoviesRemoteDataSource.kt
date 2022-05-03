@@ -2,9 +2,9 @@ package dev.tutushkin.lesson8.data.movies.remote
 
 interface MoviesRemoteDataSource {
 
-    suspend fun getConfiguration(apiKey: String): ConfigurationResponse
+    suspend fun getConfiguration(apiKey: String): Result<ConfigurationDto>
 
-    suspend fun getGenres(apiKey: String): GenresResponse
+    suspend fun getGenres(apiKey: String): Result<List<GenreDto>>
 
     suspend fun getNowPlaying(apiKey: String): Result<List<MovieListDto>>
 

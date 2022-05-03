@@ -1,8 +1,8 @@
 package dev.tutushkin.lesson8.data.movies
 
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.core.network.NetworkModule
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
+import dev.tutushkin.lesson8.data.core.network.NetworkModule.allGenres
+import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
 import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSource
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
@@ -20,24 +20,47 @@ class MoviesRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : MoviesRepository {
 
-    override suspend fun getConfiguration(apiKey: String): Configuration =
+    override suspend fun getConfiguration(apiKey: String): Result<Configuration> =
         withContext(ioDispatcher) {
             // TODO Add local configuration load if it exists
 //            val localConfiguration = moviesLocalDataSource.getConfiguration()
 
-            val configurationResponse = moviesRemoteDataSource.getConfiguration(apiKey)
-            Configuration(imagesBaseUrl = configurationResponse.images.imagesBaseUrl)
+            moviesRemoteDataSource.getConfiguration(apiKey)
+                .mapCatching {
+                    Configuration(
+                        imagesBaseUrl = it.imagesBaseUrl,
+                        posterSizes = it.posterSizes,
+                        backdropSizes = it.backdropSizes,
+                        profileSizes = it.profileSizes
+                    )
+                }
+                .onSuccess {
+                    println("Config Repo Success!!!")
+                }
+                .onFailure {
+                    println("Config Repo Error!!!")
+                }
+
         }
 
 
-    override suspend fun getGenres(apiKey: String): List<Genre> =
+    override suspend fun getGenres(apiKey: String): Result<List<Genre>> =
         withContext(ioDispatcher) {
             // TODO Add local genres load if it exists
 
-            val genresResponse = moviesRemoteDataSource.getGenres(apiKey)
-            genresResponse.genres.map {
-                Genre(id = it.id, name = it.name)
+            runCatching {
+                moviesRemoteDataSource.getGenres(apiKey)
+                    .getOrThrow()
+                    .map {
+                        Genre(id = it.id, name = it.name)
+                    }
             }
+                .onSuccess {
+                    println("Genres Repo Success!!!")
+                }
+                .onFailure {
+                    println("Genres Repo Error!!!")
+                }
         }
 
     override suspend fun getActors(movieId: Int, apiKey: String): Actor {
@@ -58,78 +81,34 @@ class MoviesRepositoryImpl(
 //            _movies.postValue(localMovies)
 //        }
 
-            val listDto: List<MovieList> =
+            runCatching {
                 moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
                     .getOrThrow()
                     .map { movie ->
                         MovieList(
                             id = movie.id,
                             title = movie.title,
-                            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
+//                            poster = "${configApi.imagesBaseUrl}${configApi.posterSizes.first()}${movie.posterPath}",
+                            poster = "${configApi.imagesBaseUrl}w342${movie.posterPath}",
                             ratings = movie.voteAverage,
                             numberOfRatings = movie.voteCount,
                             minimumAge = if (movie.adult) "18+" else "0+",
                             year = Util.dateToYear(movie.releaseDate),
-                            genres = genres.filter {
+                            genres = allGenres.filter {
                                 movie.genreIds.contains(it.id)
                             }.joinToString(transform = Genre::name)
                         )
                     }
+            }
+                .onSuccess {
+                    println("List Repo Success!!!")
+                }
+                .onFailure {
+                    println("List Repo Error!!!")
+                }
 
-
-            return@withContext Result.success(listDto)
-            /*.map { movie ->
-                MovieList(
-                    id = movie.id,
-                    title = movie.title,
-                    poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-                    ratings = movie.voteAverage,
-                    numberOfRatings = movie.voteCount,
-                    minimumAge = if (movie.adult) "18+" else "0+",
-                    year = Util.dateToYear(movie.releaseDate),
-                    genres = genres.filter {
-                        movie.genreIds.contains(it.id)
-                    }.joinToString(transform = Genre::name)
-                ) }
-
-    listDto.getOrThrow().ma
-    Result.success(listDto.getOrDefault(listOf()).map { movie ->
-        MovieList(
-            id = movie.id,
-            title = movie.title,
-            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-            ratings = movie.voteAverage,
-            numberOfRatings = movie.voteCount,
-            minimumAge = if (movie.adult) "18+" else "0+",
-            year = Util.dateToYear(movie.releaseDate),
-            genres = genres.filter {
-                movie.genreIds.contains(it.id)
-            }.joinToString(transform = Genre::name)
-        )
-    }
-    )*/
         }
 
-//        val remoteMoviesResult = withContext(Dispatchers.IO) {
-//            NetworkModule.moviesApi.getNowPlaying(BuildConfig.API_KEY)
-//        }
-
-    /*nowPlayingResponse.result.map { movie ->
-        MovieList(
-            id = movie.id,
-            title = movie.title,
-            poster = "${NetworkModule.imagesBaseUrl}${NetworkModule.posterSize}${movie.posterPath}",
-            ratings = movie.voteAverage,
-            numberOfRatings = movie.voteCount,
-            minimumAge = if (movie.adult) 18 else 0,
-            year = Util.dateToYear(movie.releaseDate),
-            genres = genres.filter {
-                movie.genreIds.contains(it.id)
-            }.joinToString(transform = Genre::name)
-        )
-    }
-
-    Result.Success()*/
 //            if (remoteMoviesResult is _Result.Success) {
 //        val newMovies = remoteMoviesResult.results.map { movie ->
 //            MovieEntity(

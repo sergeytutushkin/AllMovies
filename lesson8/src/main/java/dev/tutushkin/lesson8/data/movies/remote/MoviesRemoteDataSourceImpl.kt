@@ -4,17 +4,32 @@ class MoviesRemoteDataSourceImpl(
     private val moviesApi: MoviesApi
 ) : MoviesRemoteDataSource {
 
-    override suspend fun getConfiguration(apiKey: String): ConfigurationResponse =
-        moviesApi.getConfiguration(apiKey)
+    override suspend fun getConfiguration(apiKey: String): Result<ConfigurationDto> =
+        runCatching { moviesApi.getConfiguration(apiKey).images }
+            .onSuccess {
+                println("Config Source Success!!!")
+            }
+            .onFailure {
+                println("Config Source Error!!!")
+            }
 
-    override suspend fun getGenres(apiKey: String): GenresResponse =
-        moviesApi.getGenres(apiKey)
+    override suspend fun getGenres(apiKey: String): Result<List<GenreDto>> =
+        runCatching { moviesApi.getGenres(apiKey).genres }
+            .onSuccess {
+                println("Genres Source Success!!!")
+            }
+            .onFailure {
+                println("Genres Source Error!!!")
+            }
 
     override suspend fun getNowPlaying(apiKey: String): Result<List<MovieListDto>> =
         // TODO Add check for errors
         runCatching { moviesApi.getNowPlaying(apiKey).results }
-//            .onSuccess { Result.success(it) }
-            .onFailure { Result.failure<Exception>(it) }
+            .onFailure {
+                println("List Source Error!!!")
+            }.onSuccess {
+                println("List Source Success!!!")
+            }
 
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetailsResponse =

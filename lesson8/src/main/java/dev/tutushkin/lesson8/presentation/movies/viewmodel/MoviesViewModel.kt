@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tutushkin.lesson8.BuildConfig
+import dev.tutushkin.lesson8.data.core.network.NetworkModule.allGenres
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.genres
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
 import kotlinx.coroutines.launch
 
@@ -23,38 +23,41 @@ class MoviesViewModel(
 //    private val configuration : Configuration
 //    val configuration: LiveData<Configuration> = _configuration
 
-//    private val db: MoviesDb = MoviesDb.getDatabase(application)
-
     init {
         viewModelScope.launch {
 //            if (imagesBaseUrl.isEmpty())
 //                loadConfiguration()
-            configApi = moviesRepository.getConfiguration(BuildConfig.API_KEY)
+            handleLoadApiConfiguration()
 
 //                if (genres.isEmpty())
 //                    loadGenres()
-            genres = moviesRepository.getGenres(BuildConfig.API_KEY)
+            handleGenres()
 
 //            loadMovies()
             _movies.postValue(handleMoviesNowPlaying())
         }
     }
 
-//    private fun loadConfiguration() {
-//        viewModelScope.launch {
-//            val configurationResponse = tmdbApi.getConfiguration(BuildConfig.API_KEY).images
-//            imagesBaseUrl = configurationResponse.imagesBaseUrl
-//        }
-//    }
+    private suspend fun handleLoadApiConfiguration() {
+        val conf = moviesRepository.getConfiguration(BuildConfig.API_KEY)
 
-//    private fun loadGenres() {
-//        viewModelScope.launch {
-//            val genresResponse = moviesApi.getGenres(BuildConfig.API_KEY).genres
-//            genres = genresResponse.map {
-//                GenreEntity(id = it.id, name = it.name)
-//            }
-//        }
-//    }
+        if (conf.isSuccess) {
+            configApi = conf.getOrThrow()
+        } else {
+            println(conf.exceptionOrNull())
+//            _errorMessage.postValue("Something went wrong when getting configuration. Please, check your connection and try again")
+        }
+    }
+
+    private suspend fun handleGenres() {
+        val genres = moviesRepository.getGenres(BuildConfig.API_KEY)
+
+        if (genres.isSuccess) {
+            allGenres = genres.getOrThrow()
+        } else {
+            println(genres.exceptionOrNull())
+        }
+    }
 
 //    private fun loadMovies() {
 //

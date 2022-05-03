@@ -86,14 +86,21 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
     private fun handleMoviesList(state: MoviesResult) {
         when (state) {
             is MoviesResult.SuccessResult -> {
-                hideLoading()
+//                hideLoading()
+                println("Fragment Success!!!")
+//                Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 adapter.submitList(state.result)
             }
             is MoviesResult.ErrorResult -> {
-                hideLoading()
+//                hideLoading()
+                println("Fragment Error!!!")
                 Toast.makeText(requireContext(), state.e.message, Toast.LENGTH_SHORT).show()
             }
-            is MoviesResult.Loading -> showLoading()
+            is MoviesResult.Loading -> //showLoading()
+            {
+                println("Fragment Loading!!!")
+//                Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

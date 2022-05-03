@@ -18,15 +18,13 @@ import java.util.concurrent.TimeUnit
 // TODO Get off singleton
 object NetworkModule {
 
-    //    private val baseUrl = "https://api.themoviedb.org/3/"
-    var imagesBaseUrl = ""
-    var genres: List<Genre> = listOf()
+    var allGenres: List<Genre> = listOf()
 
-    // TODO Optimize image sizes dynamically based on a display
-    var posterSize = "w342"
-
-    var backdropSize = "w780"
-    var profileSize = "w185"
+    // TODO Move to DataStore
+//    var imagesBaseUrl = "https://image.tmdb.org/t/p/"
+//    var posterSize = "w342"
+//    var backdropSize = "w780"
+//    var profileSize = "w185"
     var configApi: Configuration = Configuration()
 
     private val json = Json {
