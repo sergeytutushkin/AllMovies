@@ -4,11 +4,11 @@ data class MovieList(
     val id: Long = 0,
     val title: String = "",
 //    val overview: String = "",
-    val poster: String? = "",
+    val poster: String = "",
 //    val backdrop: String = "",
     val ratings: Float = 0.0f,
     val numberOfRatings: Int = 0,
-    val minimumAge: String = "",    //TODO Correct values
+    val minimumAge: String = "",    // TODO Correct values
     val year: String = "",
     val genres: String = ""
 //    val runtime: Int = 0,   // TODO Add?

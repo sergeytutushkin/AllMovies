@@ -8,7 +8,7 @@ data class MovieDetails(
     val backdrop: String = "",
     val ratings: Float = 0.0f,
     val numberOfRatings: Int,
-    val minimumAge: Int,
+    val minimumAge: String = "",    // TODO Correct values
     val year: String,   // TODO Add to screen
     val runtime: Int = 0,
     val genres: String,

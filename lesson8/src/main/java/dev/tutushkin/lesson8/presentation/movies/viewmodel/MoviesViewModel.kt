@@ -17,23 +17,13 @@ class MoviesViewModel(
     private val _movies = MutableLiveData<MoviesResult>()
     val movies: LiveData<MoviesResult> = _movies
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-//    private val configuration : Configuration
-//    val configuration: LiveData<Configuration> = _configuration
+//    private val _errorMessage = MutableLiveData<String>()
+//    val errorMessage: LiveData<String> = _errorMessage
 
     init {
         viewModelScope.launch {
-//            if (imagesBaseUrl.isEmpty())
-//                loadConfiguration()
             handleLoadApiConfiguration()
-
-//                if (genres.isEmpty())
-//                    loadGenres()
             handleGenres()
-
-//            loadMovies()
             _movies.postValue(handleMoviesNowPlaying())
         }
     }
@@ -45,7 +35,6 @@ class MoviesViewModel(
             configApi = conf.getOrThrow()
         } else {
             println(conf.exceptionOrNull())
-//            _errorMessage.postValue("Something went wrong when getting configuration. Please, check your connection and try again")
         }
     }
 
@@ -58,48 +47,6 @@ class MoviesViewModel(
             println(genres.exceptionOrNull())
         }
     }
-
-//    private fun loadMovies() {
-//
-//        viewModelScope.launch {
-//            val localMovies = withContext(Dispatchers.IO) {
-//                db.moviesDao().getNowPlaying()
-//            }
-//
-//            if (localMovies.isNotEmpty()) {
-//                _movies.postValue(localMovies)
-//            }
-//
-//            val remoteMoviesResult = withContext(Dispatchers.IO) {
-//                moviesApi.getNowPlaying(BuildConfig.API_KEY)
-//            }
-//
-////            if (remoteMoviesResult is _Result.Success) {
-//            val newMovies = remoteMoviesResult.results.map { movie ->
-//                MovieEntity(
-//                    id = movie.id,
-//                    title = movie.title,
-//                    overview = movie.overview,
-//                    poster = "$imagesBaseUrl$posterSize${movie.posterPath}",
-//                    backdrop = "",
-//                    ratings = movie.voteAverage.toFloat(),
-//                    numberOfRatings = movie.voteCount,
-//                    minimumAge = if (movie.adult) 18 else 0,
-//                    year = Util.dateToYear(movie.releaseDate),
-//                    genres = movie.genreIds
-//                )
-//            }
-//
-//            withContext(Dispatchers.IO) {
-//                db.moviesDao().insertAll(newMovies)
-//            }
-//
-//            _movies.postValue(newMovies)
-////            } else if (remoteMoviesResult is _Result.Error) {
-////                _errorMessage.postValue(remoteMoviesResult.message)
-////            }
-//        }
-//    }
 
     private suspend fun handleMoviesNowPlaying(): MoviesResult {
         val moviesResult = moviesRepository.getNowPlaying(BuildConfig.API_KEY)

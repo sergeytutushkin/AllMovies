@@ -2,17 +2,21 @@ package dev.tutushkin.lesson8.data.movies.local
 
 interface MoviesLocalDataSource {
 
-    suspend fun getConfiguration(): ConfigurationEntity
+    suspend fun getConfiguration(): ConfigurationEntity?
 
-    suspend fun getGenres(): GenreEntity
+    suspend fun setConfiguration(configuration: ConfigurationEntity)
 
-    suspend fun getNowPlaying(): List<MovieEntity>
+    suspend fun getGenres(): List<GenreEntity>
 
-    suspend fun getMovieDetails(id: Int): MovieEntity
+    suspend fun setGenres(genres: List<GenreEntity>)
 
-    suspend fun insertAll(movies: List<MovieEntity>)
+    suspend fun getNowPlaying(): List<MovieListEntity>
 
-    suspend fun insert(movie: MovieEntity): Long
+    suspend fun setNowPlaying(movies: List<MovieListEntity>)
+
+    suspend fun getMovieDetails(id: Long): MovieDetailsEntity?
+
+    suspend fun setMovieDetails(movie: MovieDetailsEntity): Long
 
     suspend fun deleteAll()
 }

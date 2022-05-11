@@ -8,13 +8,20 @@ import androidx.room.TypeConverters
 import dev.tutushkin.lesson8.data.movies.local.*
 
 @Database(
-    entities = [MovieEntity::class, GenreEntity::class, ActorEntity::class, ConfigurationEntity::class],
-    version = 2
+    entities = [
+        MovieListEntity::class,
+        MovieDetailsEntity::class,
+        GenreEntity::class,
+        ActorEntity::class,
+        ConfigurationEntity::class
+    ],
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class MoviesDb : RoomDatabase() {
 
     abstract fun moviesDao(): MoviesDao
+    abstract fun movieDetails(): MovieDetailsDao
     abstract fun genresDao(): GenresDao
     abstract fun actorsDao(): ActorsDao
     abstract fun configurationDao(): ConfigurationDao

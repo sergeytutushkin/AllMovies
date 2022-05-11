@@ -1,31 +1,30 @@
 package dev.tutushkin.lesson8.presentation.moviedetails.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.tutushkin.lesson8.data.core.db.MoviesDb
+import dev.tutushkin.lesson8.BuildConfig
+import dev.tutushkin.lesson8.domain.movies.MoviesRepository
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ExperimentalSerializationApi
 
-@ExperimentalSerializationApi
+//@ExperimentalSerializationApi
 class MovieDetailsViewModel(
-    application: Application,
-    id: Int
+    private val moviesRepository: MoviesRepository,
+    private val id: Long
 ) : ViewModel() {
 
     private val _currentMovie = MutableLiveData<MovieDetailsResult>()
     val currentMovie: LiveData<MovieDetailsResult> = _currentMovie
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
-
-    private val db: MoviesDb = MoviesDb.getDatabase(application)
+//    private val _errorMessage = MutableLiveData<String>()
+//    val errorMessage: LiveData<String> = _errorMessage
 
     init {
         viewModelScope.launch {
-            loadMovie(id)
+//            loadMovie(id)
+
+            _currentMovie.postValue(handleMovieDetails())
         }
     }
 
@@ -79,6 +78,15 @@ class MovieDetailsViewModel(
 
             _currentMovie.postValue(MovieDetailsResult(newMovieEntity, newActorsEntity))
         }*/
+    }
+
+    private suspend fun handleMovieDetails(): MovieDetailsResult {
+        val movieDetails = moviesRepository.getMovieDetails(id, BuildConfig.API_KEY)
+
+        return if (movieDetails.isSuccess)
+            MovieDetailsResult.SuccessResult(movieDetails.getOrThrow())
+        else
+            MovieDetailsResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
     }
 
 }

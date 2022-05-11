@@ -32,8 +32,19 @@ class MoviesRemoteDataSourceImpl(
             }
 
 
-    override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetailsResponse =
-        moviesApi.getMovieDetails(movieId, apiKey)
+    override suspend fun getMovieDetails(
+        movieId: Long,
+        apiKey: String
+    ): Result<MovieDetailsResponse> =
+        runCatching {
+            moviesApi.getMovieDetails(movieId, apiKey)
+        }
+            .onSuccess {
+                println("Details Source Success!!!")
+            }
+            .onFailure {
+                println("Details Source Error!!!")
+            }
 
     override suspend fun getActors(movieId: Int, apiKey: String): MovieActorsResponse =
         moviesApi.getActors(movieId, apiKey)

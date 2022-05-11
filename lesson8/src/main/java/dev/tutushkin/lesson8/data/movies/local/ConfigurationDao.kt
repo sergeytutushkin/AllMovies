@@ -7,8 +7,9 @@ import androidx.room.Query
 
 @Dao
 interface ConfigurationDao {
+
     @Query("SELECT * FROM configuration")
-    fun get(): ConfigurationEntity
+    fun get(): ConfigurationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(configuration: ConfigurationEntity)

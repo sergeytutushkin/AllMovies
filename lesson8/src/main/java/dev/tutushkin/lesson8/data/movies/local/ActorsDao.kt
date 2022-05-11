@@ -1,12 +1,11 @@
 package dev.tutushkin.lesson8.data.movies.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ActorsDao {
+
+    @Transaction
     @Query("SELECT * FROM actors")
     fun getAll(): List<ActorEntity>
 

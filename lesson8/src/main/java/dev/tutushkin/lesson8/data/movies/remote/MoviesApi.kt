@@ -23,7 +23,7 @@ interface MoviesApi {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
-        @Path("movie_id") movieId: Int,
+        @Path("movie_id") movieId: Long,
         @Query("api_key") apiKey: String
     ): MovieDetailsResponse
 

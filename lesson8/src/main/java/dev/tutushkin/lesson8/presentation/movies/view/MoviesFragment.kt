@@ -40,20 +40,20 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 //        val displayMetrics = DisplayMetrics()
 //            ...
 
-//        val viewModelFactory = MoviesViewModelFactory(requireActivity().application)
-
-//        val viewModel = ViewModelProvider(this, viewModelFactory)[MoviesViewModel::class.java]
-
         val db = MoviesDb.getDatabase(requireActivity().application)
         val remoteDataSource = MoviesRemoteDataSourceImpl(moviesApi)
-        val localDataSource = MoviesLocalDataSourceImpl(db.moviesDao(), db.configurationDao())
+        val localDataSource = MoviesLocalDataSourceImpl(
+            db.moviesDao(),
+            db.movieDetails(),
+            db.configurationDao(),
+            db.genresDao()
+        )
         val repository =
             MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
         val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory(repository) }
 
         _binding = FragmentMoviesListBinding.bind(view)
 
-//        val recycler = view.findViewById<RecyclerView>(R.id.movies_list_recycler)
         val spanCount = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> 3
             else -> 2
@@ -78,9 +78,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
         viewModel.movies.observe(viewLifecycleOwner, ::handleMoviesList)
 
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-        }
+//        viewModel.errorMessage.observe(viewLifecycleOwner) {
+//            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun handleMoviesList(state: MoviesResult) {
@@ -98,6 +98,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
             }
             is MoviesResult.Loading -> //showLoading()
             {
+//                showLoading()
                 println("Fragment Loading!!!")
 //                Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
             }

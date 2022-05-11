@@ -4,12 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "movies")
-data class MovieEntity(
+@Entity(tableName = "movie_details")
+data class MovieDetailsEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Long,
 
     @ColumnInfo(name = "title")
     val title: String,
@@ -17,8 +17,8 @@ data class MovieEntity(
     @ColumnInfo(name = "overview")
     val overview: String,
 
-    @ColumnInfo(name = "poster")
-    val poster: String,
+//    @ColumnInfo(name = "poster")
+//    val poster: String,
 
     @ColumnInfo(name = "backdrop")
     val backdrop: String,
@@ -30,7 +30,7 @@ data class MovieEntity(
     val numberOfRatings: Int,
 
     @ColumnInfo(name = "minimumAge")
-    val minimumAge: Int,
+    val minimumAge: String,
 
     @ColumnInfo(name = "year")
     val year: String,
@@ -38,8 +38,8 @@ data class MovieEntity(
     @ColumnInfo(name = "runtime")
     val runtime: Int = 0,
 
-    @ColumnInfo(name = "genres_id")
-    val genres: List<Int> = listOf(),
+    @ColumnInfo(name = "genres")
+    val genres: String,
 
     @ColumnInfo(name = "actors_id")
     val actors: List<Int> = listOf()
