@@ -6,6 +6,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dev.tutushkin.lesson8.R
 import dev.tutushkin.lesson8.data.core.db.MoviesDb
 import dev.tutushkin.lesson8.data.core.network.NetworkModule
@@ -13,7 +16,8 @@ import dev.tutushkin.lesson8.data.movies.MoviesRepositoryImpl
 import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSourceImpl
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.lesson8.databinding.FragmentMoviesDetailsBinding
-import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsResult
+import dev.tutushkin.lesson8.domain.movies.models.MovieDetails
+import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsState
 import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsViewModel
 import dev.tutushkin.lesson8.presentation.moviedetails.viewmodel.MovieDetailsViewModelFactory
 import dev.tutushkin.lesson8.presentation.movies.view.MOVIES_KEY
@@ -64,7 +68,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 //        val duration: TextView = view.findViewById(R.id.movies_details_duration_text)
 //        val recycler = view.findViewById<RecyclerView>(R.id.movie_details_actors_recycler)
 
-        viewModel.currentMovie.observe(viewLifecycleOwner, ::handleMovieDetails)
+        viewModel.currentMovie.observe(viewLifecycleOwner, ::render)
         /*viewModel.currentMovie.observe(viewLifecycleOwner, {
             age.text = view.context.getString(R.string.movies_list_age, it.movie.minimumAge)
             title.text = it.movie.title
@@ -92,25 +96,45 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 
     }
 
-    private fun handleMovieDetails(state: MovieDetailsResult) {
+    private fun render(state: MovieDetailsState) {
         when (state) {
-            is MovieDetailsResult.SuccessResult -> {
+            is MovieDetailsState.Result -> {
 //                hideLoading()
                 println("Fragment Details Success!!!")
+                renderResult(state.movie)
 //                Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
 //                adapter.submitList(state.result)
             }
-            is MovieDetailsResult.ErrorResult -> {
+            is MovieDetailsState.Error -> {
 //                hideLoading()
                 println("Fragment Details Error!!!")
                 Toast.makeText(requireContext(), state.e.message, Toast.LENGTH_SHORT).show()
             }
-            is MovieDetailsResult.Loading -> //showLoading()
-            {
+            is MovieDetailsState.Loading -> {
 //                showLoading()
                 println("Fragment Details Loading!!!")
 //                Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun renderResult(movie: MovieDetails) {
+        binding?.apply {
+            moviesDetailsAgeText.text = movie.minimumAge
+            moviesDetailsTitleText.text = movie.title
+            moviesDetailsGenresText.text = movie.genres
+            moviesDetailsRating.rating = movie.ratings / 2
+            moviesDetailsRatingsCountText.text =
+                requireContext().getString(R.string.movie_details_reviews, movie.numberOfRatings)
+            moviesDetailsDurationText.text =
+                requireContext().getString(R.string.movies_list_duration, movie.runtime)
+            moviesDetailsStorylineContentText.text = movie.overview
+            Glide.with(requireContext())
+                .load(movie.backdrop)
+                .into(moviesDetailsPosterImage)
+            movieDetailsActorsRecycler.layoutManager =
+                LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            movieDetailsActorsRecycler.adapter = ActorsAdapter(movie.actors)
         }
     }
 

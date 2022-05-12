@@ -128,7 +128,7 @@
             tools:rating="4" />
 
         <TextView
-            android:id="@+id/movies_details_reviews_text"
+            android:id="@+id/movies_details_ratings_count_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -153,7 +153,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/movies_details_reviews_text" />
+            app:layout_constraintTop_toBottomOf="@+id/movies_details_ratings_count_text" />
 
         <TextView
             android:id="@+id/movies_details_storyline_content_text"

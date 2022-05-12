@@ -23,7 +23,17 @@ class MoviesRepositoryImpl(
         withContext(ioDispatcher) {
             val localConfiguration = moviesLocalDataSource.getConfiguration()
 
-            if (localConfiguration == null) {
+            if (localConfiguration != null) {
+                println("Config Local Repo Success!!!")
+                Result.success(
+                    Configuration(
+                        imagesBaseUrl = localConfiguration.imagesBaseUrl,
+                        posterSizes = localConfiguration.posterSizes,
+                        backdropSizes = localConfiguration.backdropSizes,
+                        profileSizes = localConfiguration.profileSizes
+                    )
+                )
+            } else {
                 moviesRemoteDataSource.getConfiguration(apiKey)
                     .mapCatching {
                         Configuration(
@@ -47,16 +57,6 @@ class MoviesRepositoryImpl(
                     .onFailure {
                         println("Config Remote Repo Error!!!")
                     }
-            } else {
-                println("Config Local Repo Success!!!")
-                Result.success(
-                    Configuration(
-                        imagesBaseUrl = localConfiguration.imagesBaseUrl,
-                        posterSizes = localConfiguration.posterSizes,
-                        backdropSizes = localConfiguration.backdropSizes,
-                        profileSizes = localConfiguration.profileSizes
-                    )
-                )
             }
         }
 
@@ -65,8 +65,12 @@ class MoviesRepositoryImpl(
         withContext(ioDispatcher) {
             val localGenres = moviesLocalDataSource.getGenres()
 
-            if (localGenres.isEmpty()) {
-
+            if (localGenres.isNotEmpty()) {
+                println("Genres Local Repo Success!!!")
+                Result.success(localGenres.map {
+                    Genre(id = it.id, name = it.name)
+                })
+            } else {
                 runCatching {
                     moviesRemoteDataSource.getGenres(apiKey)
                         .getOrThrow()
@@ -83,11 +87,6 @@ class MoviesRepositoryImpl(
                     .onFailure {
                         println("Genres Remote Repo Error!!!")
                     }
-            } else {
-                println("Genres Local Repo Success!!!")
-                Result.success(localGenres.map {
-                    Genre(id = it.id, name = it.name)
-                })
             }
         }
 
@@ -96,8 +95,21 @@ class MoviesRepositoryImpl(
 
             val localMovies = moviesLocalDataSource.getNowPlaying()
 
-            if (localMovies.isEmpty()) {
-
+            if (localMovies.isNotEmpty()) {
+                println("List Local Repo Success!!!")
+                Result.success(localMovies.map { movie ->
+                    MovieList(
+                        id = movie.id,
+                        title = movie.title,
+                        poster = movie.poster,
+                        ratings = movie.ratings,
+                        numberOfRatings = movie.numberOfRatings,
+                        minimumAge = movie.minimumAge,
+                        year = movie.year,
+                        genres = movie.genres
+                    )
+                })
+            } else {
                 runCatching {
                     moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
                         .getOrThrow()
@@ -135,20 +147,6 @@ class MoviesRepositoryImpl(
                     .onFailure {
                         println("List Remote Repo Error!!!")
                     }
-            } else {
-                println("List Local Repo Success!!!")
-                Result.success(localMovies.map { movie ->
-                    MovieList(
-                        id = movie.id,
-                        title = movie.title,
-                        poster = movie.poster,
-                        ratings = movie.ratings,
-                        numberOfRatings = movie.numberOfRatings,
-                        minimumAge = movie.minimumAge,
-                        year = movie.year,
-                        genres = movie.genres
-                    )
-                })
             }
 
         }
@@ -157,7 +155,23 @@ class MoviesRepositoryImpl(
         withContext(ioDispatcher) {
             val localMovie = moviesLocalDataSource.getMovieDetails(movieId)
 
-            if (localMovie == null) {
+            if (localMovie != null) {
+                println("Details Local Repo Success!!!")
+                Result.success(
+                    MovieDetails(
+                        id = localMovie.id,
+                        title = localMovie.title,
+                        overview = localMovie.overview,
+                        backdrop = localMovie.backdrop,
+                        ratings = localMovie.ratings,
+                        numberOfRatings = localMovie.numberOfRatings,
+                        minimumAge = localMovie.minimumAge,
+                        year = localMovie.year,
+                        runtime = localMovie.runtime,
+                        genres = localMovie.genres
+                    )
+                )
+            } else {
                 moviesRemoteDataSource.getMovieDetails(movieId, apiKey)
                     .mapCatching { movie ->
                         MovieDetails(
@@ -169,6 +183,8 @@ class MoviesRepositoryImpl(
                             numberOfRatings = movie.voteCount,
                             minimumAge = if (movie.adult) "18+" else "0+",
                             year = Util.dateToYear(movie.releaseDate),
+                            runtime = movie.runtime,
+                            // TODO Mapping genres
 //                            genres = movie.genres.map { it.id }
 //                                .joinToString(transform = Genre::name)
                             genres = ""
@@ -186,6 +202,7 @@ class MoviesRepositoryImpl(
                                 numberOfRatings = it.numberOfRatings,
                                 minimumAge = it.minimumAge,
                                 year = it.year,
+                                runtime = it.runtime,
                                 genres = it.genres
                             )
                         )
@@ -193,21 +210,6 @@ class MoviesRepositoryImpl(
                     .onFailure {
                         println("Details Remote Repo Error!!!")
                     }
-            } else {
-                println("Details Local Repo Success!!!")
-                Result.success(
-                    MovieDetails(
-                        id = localMovie.id,
-                        title = localMovie.title,
-                        overview = localMovie.overview,
-                        backdrop = localMovie.backdrop,
-                        ratings = localMovie.ratings,
-                        numberOfRatings = localMovie.numberOfRatings,
-                        minimumAge = localMovie.minimumAge,
-                        year = localMovie.year,
-                        genres = localMovie.genres
-                    )
-                )
             }
         }
 

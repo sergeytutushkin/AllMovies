@@ -15,7 +15,7 @@ import dev.tutushkin.lesson8.data.movies.local.MoviesLocalDataSourceImpl
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.lesson8.databinding.FragmentMoviesListBinding
 import dev.tutushkin.lesson8.presentation.moviedetails.view.MovieDetailsFragment
-import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesResult
+import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesState
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModel
 import dev.tutushkin.lesson8.presentation.movies.viewmodel.MoviesViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -83,20 +83,20 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 //        }
     }
 
-    private fun handleMoviesList(state: MoviesResult) {
+    private fun handleMoviesList(state: MoviesState) {
         when (state) {
-            is MoviesResult.SuccessResult -> {
+            is MoviesState.Result -> {
 //                hideLoading()
                 println("Fragment Success!!!")
 //                Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 adapter.submitList(state.result)
             }
-            is MoviesResult.ErrorResult -> {
+            is MoviesState.Error -> {
 //                hideLoading()
                 println("Fragment Error!!!")
                 Toast.makeText(requireContext(), state.e.message, Toast.LENGTH_SHORT).show()
             }
-            is MoviesResult.Loading -> //showLoading()
+            is MoviesState.Loading -> //showLoading()
             {
 //                showLoading()
                 println("Fragment Loading!!!")

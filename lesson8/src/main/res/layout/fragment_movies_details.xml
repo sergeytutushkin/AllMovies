@@ -128,7 +128,7 @@
             tools:rating="4" />
 
         <TextView
-            android:id="@+id/movies_details_reviews_text"
+            android:id="@+id/movies_details_ratings_count_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

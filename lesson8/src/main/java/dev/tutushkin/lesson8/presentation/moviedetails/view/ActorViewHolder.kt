@@ -9,14 +9,14 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.movies.local.ActorEntity
+import dev.tutushkin.lesson8.domain.movies.models.Actor
 
 class ActorViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     private val photo: ImageView = view.findViewById(R.id.view_holder_actor_photo_image)
     private val name: TextView = view.findViewById(R.id.view_holder_actor_name_text)
 
-    fun onBind(actor: ActorEntity) {
+    fun onBind(actor: Actor) {
         name.text = actor.name
         Glide.with(view.context)
             .load(actor.photo)

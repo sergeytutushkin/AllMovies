@@ -14,8 +14,8 @@ class MovieDetailsViewModel(
     private val id: Long
 ) : ViewModel() {
 
-    private val _currentMovie = MutableLiveData<MovieDetailsResult>()
-    val currentMovie: LiveData<MovieDetailsResult> = _currentMovie
+    private val _currentMovie = MutableLiveData<MovieDetailsState>()
+    val currentMovie: LiveData<MovieDetailsState> = _currentMovie
 
 //    private val _errorMessage = MutableLiveData<String>()
 //    val errorMessage: LiveData<String> = _errorMessage
@@ -24,7 +24,7 @@ class MovieDetailsViewModel(
         viewModelScope.launch {
 //            loadMovie(id)
 
-            _currentMovie.postValue(handleMovieDetails())
+            _currentMovie.value = handleMovieDetails()
         }
     }
 
@@ -80,13 +80,13 @@ class MovieDetailsViewModel(
         }*/
     }
 
-    private suspend fun handleMovieDetails(): MovieDetailsResult {
+    private suspend fun handleMovieDetails(): MovieDetailsState {
         val movieDetails = moviesRepository.getMovieDetails(id, BuildConfig.API_KEY)
 
         return if (movieDetails.isSuccess)
-            MovieDetailsResult.SuccessResult(movieDetails.getOrThrow())
+            MovieDetailsState.Result(movieDetails.getOrThrow())
         else
-            MovieDetailsResult.ErrorResult(IllegalArgumentException("Error loading movies from the server!"))
+            MovieDetailsState.Error(IllegalArgumentException("Error loading movie details from the server!"))
     }
 
 }

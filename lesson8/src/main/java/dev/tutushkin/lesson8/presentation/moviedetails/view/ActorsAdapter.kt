@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.tutushkin.lesson8.R
-import dev.tutushkin.lesson8.data.movies.local.ActorEntity
+import dev.tutushkin.lesson8.domain.movies.models.Actor
 
 class ActorsAdapter(
-    private val actors: List<ActorEntity>
+    private val actors: List<Actor>
 ) : RecyclerView.Adapter<ActorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
