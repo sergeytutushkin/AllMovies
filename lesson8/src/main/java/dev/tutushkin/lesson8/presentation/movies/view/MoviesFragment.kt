@@ -61,9 +61,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         binding.moviesListRecycler.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
         val listener = object : MoviesClickListener {
-            override fun onItemClick(movieId: Long) {
+            override fun onItemClick(movieId: Int) {
                 val bundle = Bundle()
-                bundle.putLong(MOVIES_KEY, movieId)
+                bundle.putInt(MOVIES_KEY, movieId)
                 val detailsFragment = MovieDetailsFragment()
                 detailsFragment.arguments = bundle
                 requireActivity().supportFragmentManager.beginTransaction()

@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 //@ExperimentalSerializationApi
 class MovieDetailsViewModel(
     private val moviesRepository: MoviesRepository,
-    private val id: Long
+    private val id: Int
 ) : ViewModel() {
 
     private val _currentMovie = MutableLiveData<MovieDetailsState>()
@@ -28,8 +28,8 @@ class MovieDetailsViewModel(
         }
     }
 
-    private suspend fun loadMovie(id: Int) {
-        /*viewModelScope.launch {
+    /*private suspend fun loadMovie(id: Int) {
+        viewModelScope.launch {
             val localMovie = withContext(Dispatchers.IO) {
                 db.moviesDao().getMovieDetails(id)
             }
@@ -77,8 +77,8 @@ class MovieDetailsViewModel(
             }
 
             _currentMovie.postValue(MovieDetailsResult(newMovieEntity, newActorsEntity))
-        }*/
-    }
+        }
+    }*/
 
     private suspend fun handleMovieDetails(): MovieDetailsState {
         val movieDetails = moviesRepository.getMovieDetails(id, BuildConfig.API_KEY)

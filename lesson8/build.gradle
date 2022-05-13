@@ -74,6 +74,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
+//    implementation 'com.clostra.newnode:newnode:2.0.3'
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.room:room-testing:$room_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -24,6 +24,7 @@ class MoviesViewModel(
         viewModelScope.launch {
             handleLoadApiConfiguration()
             handleGenres()
+
             _movies.value = handleMoviesNowPlaying()
         }
     }

@@ -9,7 +9,7 @@ data class MovieDetailsEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Long,
+    val id: Int,
 
     @ColumnInfo(name = "title")
     val title: String,

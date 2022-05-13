@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MovieDetailsResponse(
     @SerialName("id")
-    val id: Long,
+    val id: Int,
     @SerialName("title")
     val title: String,
     @SerialName("overview")

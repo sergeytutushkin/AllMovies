@@ -43,7 +43,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         )
         val repository =
             MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-        val arg: Long = arguments?.getLong(MOVIES_KEY) ?: 0
+        val arg = arguments?.getInt(MOVIES_KEY, 0) ?: 0
         val viewModel: MovieDetailsViewModel by viewModels {
             MovieDetailsViewModelFactory(
                 repository,

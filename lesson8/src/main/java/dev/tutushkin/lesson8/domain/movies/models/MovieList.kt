@@ -1,7 +1,8 @@
 package dev.tutushkin.lesson8.domain.movies.models
 
+// TODO Delete default value(?)
 data class MovieList(
-    val id: Long = 0,
+    val id: Int = 0,
     val title: String = "",
 //    val overview: String = "",
     val poster: String = "",

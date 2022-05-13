@@ -23,7 +23,6 @@ class MoviesRemoteDataSourceImpl(
             }
 
     override suspend fun getNowPlaying(apiKey: String): Result<List<MovieListDto>> =
-        // TODO Add check for errors
         runCatching { moviesApi.getNowPlaying(apiKey).results }
             .onFailure {
                 println("List Source Error!!!")
@@ -33,7 +32,7 @@ class MoviesRemoteDataSourceImpl(
 
 
     override suspend fun getMovieDetails(
-        movieId: Long,
+        movieId: Int,
         apiKey: String
     ): Result<MovieDetailsResponse> =
         runCatching {

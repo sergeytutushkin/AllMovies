@@ -92,7 +92,7 @@ class MoviesRepositoryImpl(
 
     override suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>> =
         withContext(ioDispatcher) {
-
+//            moviesLocalDataSource.clearNowPlaying()
             val localMovies = moviesLocalDataSource.getNowPlaying()
 
             if (localMovies.isNotEmpty()) {
@@ -151,8 +151,9 @@ class MoviesRepositoryImpl(
 
         }
 
-    override suspend fun getMovieDetails(movieId: Long, apiKey: String): Result<MovieDetails> =
+    override suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails> =
         withContext(ioDispatcher) {
+//            moviesLocalDataSource.clearMovieDetails()
             val localMovie = moviesLocalDataSource.getMovieDetails(movieId)
 
             if (localMovie != null) {
@@ -184,10 +185,7 @@ class MoviesRepositoryImpl(
                             minimumAge = if (movie.adult) "18+" else "0+",
                             year = Util.dateToYear(movie.releaseDate),
                             runtime = movie.runtime,
-                            // TODO Mapping genres
-//                            genres = movie.genres.map { it.id }
-//                                .joinToString(transform = Genre::name)
-                            genres = ""
+                            genres = movie.genres.joinToString { it.name }
                         )
                     }
                     .onSuccess {
@@ -213,8 +211,10 @@ class MoviesRepositoryImpl(
             }
         }
 
-    override suspend fun getActors(movieId: Int, apiKey: String): Actor {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getActors(movieId: Int, apiKey: String): Actor =
+        withContext(ioDispatcher) {
+            val localActor = moviesLocalDataSource.getActors(movieId)
+
+        }
 
 }

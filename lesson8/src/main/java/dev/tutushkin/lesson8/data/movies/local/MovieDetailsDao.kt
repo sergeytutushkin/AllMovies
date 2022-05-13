@@ -9,7 +9,7 @@ import androidx.room.Query
 interface MovieDetailsDao {
 
     @Query("SELECT * FROM movie_details WHERE id = :id")
-    fun getMovieDetails(id: Long): MovieDetailsEntity?
+    fun getMovieDetails(id: Int): MovieDetailsEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: MovieDetailsEntity): Long

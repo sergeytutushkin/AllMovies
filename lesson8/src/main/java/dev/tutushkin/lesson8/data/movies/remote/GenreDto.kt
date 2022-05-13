@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 data class GenreDto(
     @SerialName("id")
     val id: Int,
-
     @SerialName("name")
     val name: String
 )
