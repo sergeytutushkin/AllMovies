@@ -3,9 +3,7 @@ package dev.tutushkin.lesson8.presentation.moviedetails.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
-import kotlinx.serialization.ExperimentalSerializationApi
 
-@ExperimentalSerializationApi
 class MovieDetailsViewModelFactory(
     private val repository: MoviesRepository,
     private val id: Int

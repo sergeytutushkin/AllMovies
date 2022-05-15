@@ -26,8 +26,6 @@ const val MOVIES_KEY = "MOVIES"
 @ExperimentalSerializationApi
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
-//    private val viewModel: MoviesViewModel by viewModels()
-
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
 
@@ -45,6 +43,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         val localDataSource = MoviesLocalDataSourceImpl(
             db.moviesDao(),
             db.movieDetails(),
+            db.actorsDao(),
             db.configurationDao(),
             db.genresDao()
         )
@@ -77,29 +76,22 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
         binding.moviesListRecycler.adapter = adapter
 
         viewModel.movies.observe(viewLifecycleOwner, ::handleMoviesList)
-
-//        viewModel.errorMessage.observe(viewLifecycleOwner) {
-//            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-//        }
     }
 
     private fun handleMoviesList(state: MoviesState) {
         when (state) {
             is MoviesState.Result -> {
 //                hideLoading()
-                println("Fragment Success!!!")
 //                Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                 adapter.submitList(state.result)
             }
             is MoviesState.Error -> {
 //                hideLoading()
-                println("Fragment Error!!!")
                 Toast.makeText(requireContext(), state.e.message, Toast.LENGTH_SHORT).show()
             }
             is MoviesState.Loading -> //showLoading()
             {
 //                showLoading()
-                println("Fragment Loading!!!")
 //                Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
             }
         }

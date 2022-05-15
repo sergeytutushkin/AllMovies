@@ -14,12 +14,12 @@ import kotlinx.serialization.ExperimentalSerializationApi
 // TODO Add movie search
 // TODO Add info about actors (new screen)
 // TODO Use Navigation
-// TODO Use ViewBinding
 // TODO Use DI
-// TODO Add repositories and transfer data processing logic to them
 // TODO Add column alignment to the RecyclerView
 // TODO Optimize image sizes dynamically based on a display/network speed/settings
 // TODO Add tests
+// TODO Add logging
+// TODO Replace Toasts with SnackBars
 
 @ExperimentalSerializationApi
 class MainActivity : AppCompatActivity() {

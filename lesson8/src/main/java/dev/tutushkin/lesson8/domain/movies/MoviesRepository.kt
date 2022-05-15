@@ -8,9 +8,11 @@ interface MoviesRepository {
 
     suspend fun getGenres(apiKey: String): Result<List<Genre>>
 
-    suspend fun getActors(movieId: Int, apiKey: String): Actor
+    suspend fun getActors(movieId: Int, apiKey: String): Result<List<Actor>>
 
     suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>>
 
     suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails>
+
+    suspend fun clearAll()
 }

@@ -4,7 +4,6 @@ data class MovieDetails(
     val id: Int = 0,
     val title: String = "",
     val overview: String = "",
-//    val poster: String = "",
     val backdrop: String = "",
     val ratings: Float = 0.0f,
     val numberOfRatings: Int,

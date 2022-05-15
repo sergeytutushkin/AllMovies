@@ -15,7 +15,8 @@ import dev.tutushkin.lesson8.data.movies.local.*
         ActorEntity::class,
         ConfigurationEntity::class
     ],
-    version = 3
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MoviesDb : RoomDatabase() {

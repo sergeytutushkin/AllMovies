@@ -14,14 +14,8 @@ data class MovieListEntity(
     @ColumnInfo(name = "title")
     val title: String,
 
-//    @ColumnInfo(name = "overview")
-//    val overview: String,
-
     @ColumnInfo(name = "poster")
     val poster: String,
-
-//    @ColumnInfo(name = "backdrop")
-//    val backdrop: String,
 
     @ColumnInfo(name = "ratings")
     val ratings: Float,
@@ -35,12 +29,6 @@ data class MovieListEntity(
     @ColumnInfo(name = "year")
     val year: String,
 
-//    @ColumnInfo(name = "runtime")
-//    val runtime: Int = 0,
-
     @ColumnInfo(name = "genres")
     val genres: String,
-
-//    @ColumnInfo(name = "actors_id")
-//    val actors: List<Int> = listOf()
 )

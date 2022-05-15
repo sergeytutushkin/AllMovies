@@ -14,5 +14,5 @@ data class ActorEntity(
     val name: String,
 
     @ColumnInfo(name = "photo")
-    val photo: String
+    val photo: String?
 )

@@ -11,8 +11,8 @@ import dev.tutushkin.lesson8.utils.Util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-// TODO Move work with all movies data here
-// TODO Add Result
+// TODO Add extensions for mapping
+
 class MoviesRepositoryImpl(
     private val moviesRemoteDataSource: MoviesRemoteDataSource,
     private val moviesLocalDataSource: MoviesLocalDataSource,
@@ -21,10 +21,10 @@ class MoviesRepositoryImpl(
 
     override suspend fun getConfiguration(apiKey: String): Result<Configuration> =
         withContext(ioDispatcher) {
+//            moviesLocalDataSource.clearConfiguration()
             val localConfiguration = moviesLocalDataSource.getConfiguration()
 
             if (localConfiguration != null) {
-                println("Config Local Repo Success!!!")
                 Result.success(
                     Configuration(
                         imagesBaseUrl = localConfiguration.imagesBaseUrl,
@@ -44,7 +44,6 @@ class MoviesRepositoryImpl(
                         )
                     }
                     .onSuccess {
-                        println("Config Remote Repo Success!!!")
                         moviesLocalDataSource.setConfiguration(
                             ConfigurationEntity(
                                 imagesBaseUrl = it.imagesBaseUrl,
@@ -54,21 +53,20 @@ class MoviesRepositoryImpl(
                             )
                         )
                     }
-                    .onFailure {
-                        println("Config Remote Repo Error!!!")
-                    }
             }
         }
 
-
     override suspend fun getGenres(apiKey: String): Result<List<Genre>> =
         withContext(ioDispatcher) {
+//            moviesLocalDataSource.clearGenres()
             val localGenres = moviesLocalDataSource.getGenres()
 
             if (localGenres.isNotEmpty()) {
-                println("Genres Local Repo Success!!!")
                 Result.success(localGenres.map {
-                    Genre(id = it.id, name = it.name)
+                    Genre(
+                        id = it.id,
+                        name = it.name
+                    )
                 })
             } else {
                 runCatching {
@@ -79,13 +77,9 @@ class MoviesRepositoryImpl(
                         }
                 }
                     .onSuccess {
-                        println("Genres Remote Repo Success!!!")
                         moviesLocalDataSource.setGenres(it.map { genre ->
                             GenreEntity(id = genre.id, name = genre.name)
                         })
-                    }
-                    .onFailure {
-                        println("Genres Remote Repo Error!!!")
                     }
             }
         }
@@ -96,7 +90,6 @@ class MoviesRepositoryImpl(
             val localMovies = moviesLocalDataSource.getNowPlaying()
 
             if (localMovies.isNotEmpty()) {
-                println("List Local Repo Success!!!")
                 Result.success(localMovies.map { movie ->
                     MovieList(
                         id = movie.id,
@@ -117,7 +110,6 @@ class MoviesRepositoryImpl(
                             MovieList(
                                 id = movie.id,
                                 title = movie.title,
-//                            poster = "${configApi.imagesBaseUrl}${configApi.posterSizes.first()}${movie.posterPath}",
                                 poster = "${configApi.imagesBaseUrl}w342${movie.posterPath}",
                                 ratings = movie.voteAverage,
                                 numberOfRatings = movie.voteCount,
@@ -142,22 +134,17 @@ class MoviesRepositoryImpl(
                                 genres = movie.genres
                             )
                         })
-                        println("List Remote Repo Success!!!")
-                    }
-                    .onFailure {
-                        println("List Remote Repo Error!!!")
                     }
             }
-
         }
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearMovieDetails()
+            val actors = getActors(movieId, apiKey).getOrDefault(listOf())
             val localMovie = moviesLocalDataSource.getMovieDetails(movieId)
 
             if (localMovie != null) {
-                println("Details Local Repo Success!!!")
                 Result.success(
                     MovieDetails(
                         id = localMovie.id,
@@ -169,7 +156,8 @@ class MoviesRepositoryImpl(
                         minimumAge = localMovie.minimumAge,
                         year = localMovie.year,
                         runtime = localMovie.runtime,
-                        genres = localMovie.genres
+                        genres = localMovie.genres,
+                        actors = actors
                     )
                 )
             } else {
@@ -185,11 +173,11 @@ class MoviesRepositoryImpl(
                             minimumAge = if (movie.adult) "18+" else "0+",
                             year = Util.dateToYear(movie.releaseDate),
                             runtime = movie.runtime,
-                            genres = movie.genres.joinToString { it.name }
+                            genres = movie.genres.joinToString { it.name },
+                            actors = actors
                         )
                     }
                     .onSuccess {
-                        println("Details Remote Repo Success!!!")
                         moviesLocalDataSource.setMovieDetails(
                             MovieDetailsEntity(
                                 id = it.id,
@@ -205,16 +193,53 @@ class MoviesRepositoryImpl(
                             )
                         )
                     }
-                    .onFailure {
-                        println("Details Remote Repo Error!!!")
+            }
+        }
+
+    override suspend fun getActors(movieId: Int, apiKey: String): Result<List<Actor>> =
+        withContext(ioDispatcher) {
+//            moviesLocalDataSource.clearActors()
+            val localActor = moviesLocalDataSource.getActors(movieId)
+
+            if (localActor.isNotEmpty()) {
+                Result.success(
+                    localActor.map {
+                        Actor(
+                            id = it.id,
+                            name = it.name,
+                            photo = it.photo
+                        )
+                    })
+            } else {
+                runCatching {
+                    moviesRemoteDataSource.getActors(movieId, apiKey)
+                        .getOrThrow()
+                        .map {
+                            Actor(
+                                id = it.id,
+                                name = it.name,
+                                photo = "${configApi.imagesBaseUrl}w342${it.profilePath}"
+                            )
+                        }
+                }
+                    .onSuccess {
+                        moviesLocalDataSource.setActors(it.map { actor ->
+                            ActorEntity(
+                                id = actor.id,
+                                name = actor.name,
+                                photo = actor.photo
+                            )
+                        })
                     }
             }
         }
 
-    override suspend fun getActors(movieId: Int, apiKey: String): Actor =
-        withContext(ioDispatcher) {
-            val localActor = moviesLocalDataSource.getActors(movieId)
-
-        }
+    override suspend fun clearAll() {
+        moviesLocalDataSource.clearConfiguration()
+        moviesLocalDataSource.clearGenres()
+        moviesLocalDataSource.clearNowPlaying()
+        moviesLocalDataSource.clearMovieDetails()
+        moviesLocalDataSource.clearActors()
+    }
 
 }

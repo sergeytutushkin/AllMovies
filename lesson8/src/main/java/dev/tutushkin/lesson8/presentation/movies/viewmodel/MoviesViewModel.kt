@@ -17,9 +17,6 @@ class MoviesViewModel(
     private val _movies = MutableLiveData<MoviesState>()
     val movies: LiveData<MoviesState> = _movies
 
-//    private val _errorMessage = MutableLiveData<String>()
-//    val errorMessage: LiveData<String> = _errorMessage
-
     init {
         viewModelScope.launch {
             handleLoadApiConfiguration()

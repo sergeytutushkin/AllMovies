@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import dev.tutushkin.lesson8.R
+import dev.tutushkin.lesson8.databinding.ViewHolderMovieBinding
 import dev.tutushkin.lesson8.domain.movies.models.MovieList
 
 class MoviesAdapter(
@@ -14,9 +14,9 @@ class MoviesAdapter(
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        return MovieViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.view_holder_movie, parent, false)
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ViewHolderMovieBinding.inflate(layoutInflater, parent, false)
+        return MovieViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

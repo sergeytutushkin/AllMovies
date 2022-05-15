@@ -17,9 +17,6 @@ data class MovieDetailsEntity(
     @ColumnInfo(name = "overview")
     val overview: String,
 
-//    @ColumnInfo(name = "poster")
-//    val poster: String,
-
     @ColumnInfo(name = "backdrop")
     val backdrop: String,
 
@@ -40,7 +37,4 @@ data class MovieDetailsEntity(
 
     @ColumnInfo(name = "genres")
     val genres: String,
-
-    @ColumnInfo(name = "actors_id")
-    val actors: List<Int> = listOf()
 )

@@ -12,7 +12,7 @@ interface ConfigurationDao {
     fun get(): ConfigurationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(configuration: ConfigurationEntity)
+    fun insert(configuration: ConfigurationEntity): Long
 
     @Query("DELETE FROM configuration")
     fun delete()
