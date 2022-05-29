@@ -21,6 +21,8 @@ class MovieViewHolder(
             viewHolderMovieRating.rating = item.ratings / 2
             Glide.with(root.context)
                 .load(item.poster)
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_image_24)
                 .into(viewHolderMoviePosterImage)
 
             root.setOnClickListener { clickListener.onItemClick(item.id) }

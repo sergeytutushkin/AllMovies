@@ -7,8 +7,6 @@ import dev.tutushkin.lesson8.presentation.movies.view.MoviesFragment
 import kotlinx.serialization.ExperimentalSerializationApi
 
 // TODO Add loader
-// TODO Add movie poster placeholder
-// TODO Add actors photo placeholder
 // TODO Add language selection
 // TODO Add save favorites
 // TODO Add movie search

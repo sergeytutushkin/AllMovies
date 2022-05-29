@@ -1,7 +1,6 @@
 package dev.tutushkin.lesson8.data.movies
 
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.allGenres
 import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
 import dev.tutushkin.lesson8.data.movies.local.*
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
@@ -87,55 +86,71 @@ class MoviesRepositoryImpl(
     override suspend fun getNowPlaying(apiKey: String): Result<List<MovieList>> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearNowPlaying()
-            val localMovies = moviesLocalDataSource.getNowPlaying()
+            var localMovies = moviesLocalDataSource.getNowPlaying()
 
-            if (localMovies.isNotEmpty()) {
-                Result.success(localMovies.map { movie ->
-                    MovieList(
-                        id = movie.id,
-                        title = movie.title,
-                        poster = movie.poster,
-                        ratings = movie.ratings,
-                        numberOfRatings = movie.numberOfRatings,
-                        minimumAge = movie.minimumAge,
-                        year = movie.year,
-                        genres = movie.genres
-                    )
-                })
-            } else {
-                runCatching {
-                    moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
-                        .getOrThrow()
-                        .map { movie ->
-                            MovieList(
-                                id = movie.id,
-                                title = movie.title,
-                                poster = "${configApi.imagesBaseUrl}w342${movie.posterPath}",
-                                ratings = movie.voteAverage,
-                                numberOfRatings = movie.voteCount,
-                                minimumAge = if (movie.adult) "18+" else "0+",
-                                year = Util.dateToYear(movie.releaseDate),
-                                genres = allGenres.filter {
-                                    movie.genreIds.contains(it.id)
-                                }.joinToString(transform = Genre::name)
-                            )
-                        }
-                }
+            if (localMovies.isEmpty()) {
+                getFromServer()
                     .onSuccess {
-                        moviesLocalDataSource.setNowPlaying(it.map { movie ->
-                            MovieListEntity(
-                                id = movie.id,
-                                title = movie.title,
-                                poster = movie.poster,
-                                ratings = movie.ratings,
-                                numberOfRatings = movie.numberOfRatings,
-                                minimumAge = movie.minimumAge,
-                                year = movie.year,
-                                genres = movie.genres
-                            )
-                        })
+                        moviesLocalDataSource.setNowPlaying(it)
+//                        .map { movie ->
+//                        MovieListEntity(
+//                            id = movie.id,
+//                            title = movie.title,
+//                            poster = movie.poster,
+//                            ratings = movie.ratings,
+//                            numberOfRatings = movie.numberOfRatings,
+//                            minimumAge = movie.minimumAge,
+//                            year = movie.year,
+//                            genres = movie.genres
+//                        )
+                    }
+                    .onFailure {
+                        return@withContext Result.failure(it)
+                    }
+
+                localMovies = moviesLocalDataSource.getNowPlaying()
+
+//                movie ->
+//                    MovieList(
+//                        id = movie.id,
+//                        title = movie.title,
+//                        poster = movie.poster,
+//                        ratings = movie.ratings,
+//                        numberOfRatings = movie.numberOfRatings,
+//                        minimumAge = movie.minimumAge,
+//                        year = movie.year,
+//                        genres = movie.genres
+//                    )
+//                })
+            }
+
+            Result.success(localMovies.map { it.toModel() })
+
+        }
+
+    private suspend fun getFromServer(): Result<List<MovieListEntity>> =
+        withContext(ioDispatcher) {
+            runCatching {
+                moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
+                    .getOrThrow()
+                    .map {
+                        it.toEntity()
+//                            movie ->
+//                        MovieList(
+//                            id = movie.id,
+//                            title = movie.title,
+//                            poster = "${configApi.imagesBaseUrl}w342${movie.posterPath}",
+//                            ratings = movie.voteAverage,
+//                            numberOfRatings = movie.voteCount,
+//                            minimumAge = if (movie.adult) "18+" else "0+",
+//                            year = Util.dateToYear(movie.releaseDate),
+//                            genres = allGenres.filter {
+//                                movie.genreIds.contains(it.id)
+//                            }.joinToString(transform = Genre::name)
+//                        )
                     }
             }
+
         }
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails> =
@@ -235,11 +250,13 @@ class MoviesRepositoryImpl(
         }
 
     override suspend fun clearAll() {
-        moviesLocalDataSource.clearConfiguration()
-        moviesLocalDataSource.clearGenres()
-        moviesLocalDataSource.clearNowPlaying()
-        moviesLocalDataSource.clearMovieDetails()
-        moviesLocalDataSource.clearActors()
+        withContext(ioDispatcher) {
+            moviesLocalDataSource.clearConfiguration()
+            moviesLocalDataSource.clearGenres()
+            moviesLocalDataSource.clearNowPlaying()
+            moviesLocalDataSource.clearMovieDetails()
+            moviesLocalDataSource.clearActors()
+        }
     }
 
 }

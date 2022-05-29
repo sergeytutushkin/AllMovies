@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import dev.tutushkin.lesson8.R
 import dev.tutushkin.lesson8.databinding.ViewHolderActorBinding
 import dev.tutushkin.lesson8.domain.movies.models.Actor
 
@@ -17,6 +18,8 @@ class ActorViewHolder(
             viewHolderActorNameText.text = actor.name
             Glide.with(root.context)
                 .load(actor.photo)
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .error(R.drawable.ic_baseline_image_24)
                 .transform(
                     MultiTransformation(
                         CenterCrop(),

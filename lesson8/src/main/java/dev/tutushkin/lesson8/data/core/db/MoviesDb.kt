@@ -15,7 +15,7 @@ import dev.tutushkin.lesson8.data.movies.local.*
         ActorEntity::class,
         ConfigurationEntity::class
     ],
-    version = 1,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

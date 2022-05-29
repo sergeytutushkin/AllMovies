@@ -19,6 +19,8 @@ class MoviesViewModel(
 
     init {
         viewModelScope.launch {
+            moviesRepository.clearAll()
+
             handleLoadApiConfiguration()
             handleGenres()
 
@@ -53,5 +55,9 @@ class MoviesViewModel(
             MoviesState.Result(moviesResult.getOrThrow())
         else
             MoviesState.Error(IllegalArgumentException("Error loading movies from the server!"))
+    }
+
+    private suspend fun clearAll() {
+
     }
 }
