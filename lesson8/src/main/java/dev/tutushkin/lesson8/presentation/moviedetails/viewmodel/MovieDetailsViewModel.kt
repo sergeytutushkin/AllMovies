@@ -28,7 +28,7 @@ class MovieDetailsViewModel(
         return if (movieDetails.isSuccess)
             MovieDetailsState.Result(movieDetails.getOrThrow())
         else
-            MovieDetailsState.Error(IllegalArgumentException("Error loading movie details from the server!"))
+            MovieDetailsState.Error(Exception("Error loading movie details from the server!"))
     }
 
 }

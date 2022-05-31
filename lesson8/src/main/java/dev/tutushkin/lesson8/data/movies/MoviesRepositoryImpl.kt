@@ -1,12 +1,10 @@
 package dev.tutushkin.lesson8.data.movies
 
 import dev.tutushkin.lesson8.BuildConfig
-import dev.tutushkin.lesson8.data.core.network.NetworkModule.configApi
 import dev.tutushkin.lesson8.data.movies.local.*
 import dev.tutushkin.lesson8.data.movies.remote.MoviesRemoteDataSource
 import dev.tutushkin.lesson8.domain.movies.MoviesRepository
 import dev.tutushkin.lesson8.domain.movies.models.*
-import dev.tutushkin.lesson8.utils.Util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -21,65 +19,55 @@ class MoviesRepositoryImpl(
     override suspend fun getConfiguration(apiKey: String): Result<Configuration> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearConfiguration()
-            val localConfiguration = moviesLocalDataSource.getConfiguration()
+            var localConfiguration = moviesLocalDataSource.getConfiguration()
+
+            if (localConfiguration == null) {
+                getConfigurationFromServer(apiKey)
+                    .onSuccess { moviesLocalDataSource.setConfiguration(it) }
+                    .onFailure {
+                        return@withContext Result.failure(it)
+                    }
+
+                localConfiguration = moviesLocalDataSource.getConfiguration()
+            }
 
             if (localConfiguration != null) {
-                Result.success(
-                    Configuration(
-                        imagesBaseUrl = localConfiguration.imagesBaseUrl,
-                        posterSizes = localConfiguration.posterSizes,
-                        backdropSizes = localConfiguration.backdropSizes,
-                        profileSizes = localConfiguration.profileSizes
-                    )
-                )
+                Result.success(localConfiguration.toModel())
             } else {
-                moviesRemoteDataSource.getConfiguration(apiKey)
-                    .mapCatching {
-                        Configuration(
-                            imagesBaseUrl = it.imagesBaseUrl,
-                            posterSizes = it.posterSizes,
-                            backdropSizes = it.backdropSizes,
-                            profileSizes = it.profileSizes
-                        )
-                    }
-                    .onSuccess {
-                        moviesLocalDataSource.setConfiguration(
-                            ConfigurationEntity(
-                                imagesBaseUrl = it.imagesBaseUrl,
-                                posterSizes = it.posterSizes,
-                                backdropSizes = it.backdropSizes,
-                                profileSizes = it.profileSizes
-                            )
-                        )
-                    }
+                Result.failure(Exception("Configuration cashing error!"))
             }
+        }
+
+    private suspend fun getConfigurationFromServer(apiKey: String): Result<ConfigurationEntity> =
+        withContext(ioDispatcher) {
+            moviesRemoteDataSource.getConfiguration(apiKey)
+                .mapCatching { it.toEntity() }
         }
 
     override suspend fun getGenres(apiKey: String): Result<List<Genre>> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearGenres()
-            val localGenres = moviesLocalDataSource.getGenres()
+            var localGenres = moviesLocalDataSource.getGenres()
 
-            if (localGenres.isNotEmpty()) {
-                Result.success(localGenres.map {
-                    Genre(
-                        id = it.id,
-                        name = it.name
-                    )
-                })
-            } else {
-                runCatching {
-                    moviesRemoteDataSource.getGenres(apiKey)
-                        .getOrThrow()
-                        .map {
-                            Genre(id = it.id, name = it.name)
-                        }
-                }
-                    .onSuccess {
-                        moviesLocalDataSource.setGenres(it.map { genre ->
-                            GenreEntity(id = genre.id, name = genre.name)
-                        })
+            if (localGenres.isEmpty()) {
+                getGenresFromServer(apiKey)
+                    .onSuccess { moviesLocalDataSource.setGenres(it) }
+                    .onFailure {
+                        return@withContext Result.failure(it)
                     }
+
+                localGenres = moviesLocalDataSource.getGenres()
+            }
+
+            Result.success(localGenres.map { it.toModel() })
+        }
+
+    private suspend fun getGenresFromServer(apiKey: String): Result<List<GenreEntity>> =
+        withContext(ioDispatcher) {
+            runCatching {
+                moviesRemoteDataSource.getGenres(apiKey)
+                    .getOrThrow()
+                    .map { it.toEntity() }
             }
         }
 
@@ -89,163 +77,100 @@ class MoviesRepositoryImpl(
             var localMovies = moviesLocalDataSource.getNowPlaying()
 
             if (localMovies.isEmpty()) {
-                getFromServer()
-                    .onSuccess {
-                        moviesLocalDataSource.setNowPlaying(it)
-//                        .map { movie ->
-//                        MovieListEntity(
-//                            id = movie.id,
-//                            title = movie.title,
-//                            poster = movie.poster,
-//                            ratings = movie.ratings,
-//                            numberOfRatings = movie.numberOfRatings,
-//                            minimumAge = movie.minimumAge,
-//                            year = movie.year,
-//                            genres = movie.genres
-//                        )
-                    }
+                getNowPlayingFromServer()
+                    .onSuccess { moviesLocalDataSource.setNowPlaying(it) }
                     .onFailure {
                         return@withContext Result.failure(it)
                     }
 
                 localMovies = moviesLocalDataSource.getNowPlaying()
-
-//                movie ->
-//                    MovieList(
-//                        id = movie.id,
-//                        title = movie.title,
-//                        poster = movie.poster,
-//                        ratings = movie.ratings,
-//                        numberOfRatings = movie.numberOfRatings,
-//                        minimumAge = movie.minimumAge,
-//                        year = movie.year,
-//                        genres = movie.genres
-//                    )
-//                })
             }
 
             Result.success(localMovies.map { it.toModel() })
-
         }
 
-    private suspend fun getFromServer(): Result<List<MovieListEntity>> =
+    private suspend fun getNowPlayingFromServer(): Result<List<MovieListEntity>> =
         withContext(ioDispatcher) {
             runCatching {
                 moviesRemoteDataSource.getNowPlaying(BuildConfig.API_KEY)
                     .getOrThrow()
-                    .map {
-                        it.toEntity()
-//                            movie ->
-//                        MovieList(
-//                            id = movie.id,
-//                            title = movie.title,
-//                            poster = "${configApi.imagesBaseUrl}w342${movie.posterPath}",
-//                            ratings = movie.voteAverage,
-//                            numberOfRatings = movie.voteCount,
-//                            minimumAge = if (movie.adult) "18+" else "0+",
-//                            year = Util.dateToYear(movie.releaseDate),
-//                            genres = allGenres.filter {
-//                                movie.genreIds.contains(it.id)
-//                            }.joinToString(transform = Genre::name)
-//                        )
-                    }
+                    .map { it.toEntity() }
             }
-
         }
 
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearMovieDetails()
-            val actors = getActors(movieId, apiKey).getOrDefault(listOf())
-            val localMovie = moviesLocalDataSource.getMovieDetails(movieId)
+            val actors = getActors(movieId, apiKey)
+            if (actors.isFailure) {
+                println("aaa1")
+            } else {
+                println("aaa1" + actors.getOrThrow())
+            }
+
+            var localMovie = moviesLocalDataSource.getMovieDetails(movieId)
+
+            if (localMovie == null) {
+                getMovieDetailsFromServer(movieId, apiKey)
+                    .onSuccess { moviesLocalDataSource.setMovieDetails(it) }
+                    .onFailure {
+                        return@withContext Result.failure(it)
+                    }
+
+                localMovie = moviesLocalDataSource.getMovieDetails(movieId)
+            }
 
             if (localMovie != null) {
-                Result.success(
-                    MovieDetails(
-                        id = localMovie.id,
-                        title = localMovie.title,
-                        overview = localMovie.overview,
-                        backdrop = localMovie.backdrop,
-                        ratings = localMovie.ratings,
-                        numberOfRatings = localMovie.numberOfRatings,
-                        minimumAge = localMovie.minimumAge,
-                        year = localMovie.year,
-                        runtime = localMovie.runtime,
-                        genres = localMovie.genres,
-                        actors = actors
-                    )
-                )
+                Result.success(localMovie.toModel(actors.getOrThrow()))
             } else {
-                moviesRemoteDataSource.getMovieDetails(movieId, apiKey)
-                    .mapCatching { movie ->
-                        MovieDetails(
-                            id = movie.id,
-                            title = movie.title,
-                            overview = movie.overview,
-                            backdrop = "${configApi.imagesBaseUrl}w342${movie.backdropPath}",
-                            ratings = movie.voteAverage,
-                            numberOfRatings = movie.voteCount,
-                            minimumAge = if (movie.adult) "18+" else "0+",
-                            year = Util.dateToYear(movie.releaseDate),
-                            runtime = movie.runtime,
-                            genres = movie.genres.joinToString { it.name },
-                            actors = actors
-                        )
-                    }
-                    .onSuccess {
-                        moviesLocalDataSource.setMovieDetails(
-                            MovieDetailsEntity(
-                                id = it.id,
-                                title = it.title,
-                                overview = it.overview,
-                                backdrop = it.backdrop,
-                                ratings = it.ratings,
-                                numberOfRatings = it.numberOfRatings,
-                                minimumAge = it.minimumAge,
-                                year = it.year,
-                                runtime = it.runtime,
-                                genres = it.genres
-                            )
-                        )
-                    }
+                Result.failure(Exception("Movie details cashing error!"))
             }
+        }
+
+    private suspend fun getMovieDetailsFromServer(
+        movieId: Int,
+        apiKey: String
+    ): Result<MovieDetailsEntity> =
+        withContext(ioDispatcher) {
+            moviesRemoteDataSource.getMovieDetails(movieId, apiKey)
+                .mapCatching { it.toEntity() }
         }
 
     override suspend fun getActors(movieId: Int, apiKey: String): Result<List<Actor>> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearActors()
-            val localActor = moviesLocalDataSource.getActors(movieId)
+            var localActors = moviesLocalDataSource.getActors(movieId)
 
-            if (localActor.isNotEmpty()) {
-                Result.success(
-                    localActor.map {
-                        Actor(
-                            id = it.id,
-                            name = it.name,
-                            photo = it.photo
-                        )
-                    })
-            } else {
-                runCatching {
-                    moviesRemoteDataSource.getActors(movieId, apiKey)
-                        .getOrThrow()
-                        .map {
-                            Actor(
-                                id = it.id,
-                                name = it.name,
-                                photo = "${configApi.imagesBaseUrl}w342${it.profilePath}"
-                            )
-                        }
-                }
+            if (localActors.isEmpty()) {
+                println("aaa empty")
+                getActorsFromServer(movieId, apiKey)
                     .onSuccess {
-                        moviesLocalDataSource.setActors(it.map { actor ->
-                            ActorEntity(
-                                id = actor.id,
-                                name = actor.name,
-                                photo = actor.photo
-                            )
-                        })
+                        println("aaa success " + it)
+                        println("aaa movieId " + movieId)
+
+                        moviesLocalDataSource.setActors(it)
                     }
+                    .onFailure {
+                        println("aaa failure")
+                        return@withContext Result.failure(it)
+                    }
+
+                localActors = moviesLocalDataSource.getActors(movieId)
+                println("aaa2" + localActors)
+            }
+
+            Result.success(localActors.map { it.toModel() })
+        }
+
+    private suspend fun getActorsFromServer(
+        movieId: Int,
+        apiKey: String
+    ): Result<List<ActorEntity>> =
+        withContext(ioDispatcher) {
+            runCatching {
+                moviesRemoteDataSource.getActors(movieId, apiKey)
+                    .getOrThrow()
+                    .map { it.toEntity() }
             }
         }
 

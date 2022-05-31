@@ -1,8 +1,8 @@
 package dev.tutushkin.lesson8.data.movies
 
 import dev.tutushkin.lesson8.data.core.network.NetworkModule
-import dev.tutushkin.lesson8.data.movies.local.MovieListEntity
-import dev.tutushkin.lesson8.data.movies.remote.MovieListDto
+import dev.tutushkin.lesson8.data.movies.local.*
+import dev.tutushkin.lesson8.data.movies.remote.*
 import dev.tutushkin.lesson8.domain.movies.models.Genre
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,7 +10,7 @@ import java.util.*
 internal fun MovieListDto.toEntity(): MovieListEntity = MovieListEntity(
     id = this.id,
     title = this.title,
-    poster = getPosterUrl(this.posterPath),
+    poster = getImageUrl(this.posterPath),
     ratings = this.voteAverage,
     numberOfRatings = this.voteCount,
     minimumAge = normalizeAge(this.adult),
@@ -18,7 +18,38 @@ internal fun MovieListDto.toEntity(): MovieListEntity = MovieListEntity(
     genres = filterGenres(this.genreIds)
 )
 
-private fun getPosterUrl(posterPath: String?): String =
+internal fun MovieDetailsResponse.toEntity(): MovieDetailsEntity = MovieDetailsEntity(
+    id = this.id,
+    title = this.title,
+    overview = this.overview,
+    backdrop = getImageUrl(this.backdropPath),
+    ratings = this.voteAverage,
+    numberOfRatings = this.voteCount,
+    minimumAge = normalizeAge(this.adult),
+    year = dateToYear(this.releaseDate),
+    runtime = this.runtime,
+    genres = this.genres.joinToString { it.name }
+)
+
+internal fun MovieActorDto.toEntity(): ActorEntity = ActorEntity(
+    id = this.id,
+    name = this.name,
+    photo = getImageUrl(this.profilePath)
+)
+
+internal fun GenreDto.toEntity(): GenreEntity = GenreEntity(
+    id = this.id,
+    name = this.name
+)
+
+internal fun ConfigurationDto.toEntity(): ConfigurationEntity = ConfigurationEntity(
+    imagesBaseUrl = this.imagesBaseUrl,
+    posterSizes = this.posterSizes,
+    backdropSizes = this.backdropSizes,
+    profileSizes = this.profileSizes
+)
+
+private fun getImageUrl(posterPath: String?): String =
     "${NetworkModule.configApi.imagesBaseUrl}w342${posterPath}"
 
 private fun normalizeAge(isAdult: Boolean): String = if (isAdult) {
