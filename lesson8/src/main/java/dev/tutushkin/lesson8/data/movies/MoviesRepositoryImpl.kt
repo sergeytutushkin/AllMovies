@@ -8,8 +8,6 @@ import dev.tutushkin.lesson8.domain.movies.models.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-// TODO Add extensions for mapping
-
 class MoviesRepositoryImpl(
     private val moviesRemoteDataSource: MoviesRemoteDataSource,
     private val moviesLocalDataSource: MoviesLocalDataSource,
@@ -59,7 +57,11 @@ class MoviesRepositoryImpl(
                 localGenres = moviesLocalDataSource.getGenres()
             }
 
-            Result.success(localGenres.map { it.toModel() })
+            if (localGenres.isNotEmpty()) {
+                Result.success(localGenres.map { it.toModel() })
+            } else {
+                Result.failure(Exception("Movies list cashing error!"))
+            }
         }
 
     private suspend fun getGenresFromServer(apiKey: String): Result<List<GenreEntity>> =
@@ -86,7 +88,11 @@ class MoviesRepositoryImpl(
                 localMovies = moviesLocalDataSource.getNowPlaying()
             }
 
-            Result.success(localMovies.map { it.toModel() })
+            if (localMovies.isNotEmpty()) {
+                Result.success(localMovies.map { it.toModel() })
+            } else {
+                Result.failure(Exception("Movies list cashing error!"))
+            }
         }
 
     private suspend fun getNowPlayingFromServer(): Result<List<MovieListEntity>> =
@@ -101,18 +107,15 @@ class MoviesRepositoryImpl(
     override suspend fun getMovieDetails(movieId: Int, apiKey: String): Result<MovieDetails> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearMovieDetails()
-            val actors = getActors(movieId, apiKey)
-            if (actors.isFailure) {
-                println("aaa1")
-            } else {
-                println("aaa1" + actors.getOrThrow())
-            }
 
             var localMovie = moviesLocalDataSource.getMovieDetails(movieId)
 
             if (localMovie == null) {
                 getMovieDetailsFromServer(movieId, apiKey)
-                    .onSuccess { moviesLocalDataSource.setMovieDetails(it) }
+                    .onSuccess {
+                        it.actors = getActorsList(movieId, apiKey).getOrThrow()
+                        moviesLocalDataSource.setMovieDetails(it)
+                    }
                     .onFailure {
                         return@withContext Result.failure(it)
                     }
@@ -121,7 +124,8 @@ class MoviesRepositoryImpl(
             }
 
             if (localMovie != null) {
-                Result.success(localMovie.toModel(actors.getOrThrow()))
+                val actors = getActorsData(localMovie, apiKey).getOrThrow()
+                Result.success(localMovie.toModel(actors))
             } else {
                 Result.failure(Exception("Movie details cashing error!"))
             }
@@ -136,30 +140,40 @@ class MoviesRepositoryImpl(
                 .mapCatching { it.toEntity() }
         }
 
-    override suspend fun getActors(movieId: Int, apiKey: String): Result<List<Actor>> =
+    private suspend fun getActorsList(movieId: Int, apiKey: String): Result<List<Int>> =
+        withContext(ioDispatcher) {
+            getActorsFromServer(movieId, apiKey).mapCatching {
+                it.map { actor ->
+                    actor.id
+                }
+            }
+        }
+
+    private suspend fun getActorsData(
+        movie: MovieDetailsEntity,
+        apiKey: String
+    ): Result<List<Actor>> =
         withContext(ioDispatcher) {
 //            moviesLocalDataSource.clearActors()
-            var localActors = moviesLocalDataSource.getActors(movieId)
 
-            if (localActors.isEmpty()) {
-                println("aaa empty")
-                getActorsFromServer(movieId, apiKey)
+            if (!movie.isActorsLoaded) {
+                getActorsFromServer(movie.id, apiKey)
                     .onSuccess {
-                        println("aaa success " + it)
-                        println("aaa movieId " + movieId)
-
                         moviesLocalDataSource.setActors(it)
+                        moviesLocalDataSource.setActorsLoaded(movie.id)
                     }
                     .onFailure {
-                        println("aaa failure")
                         return@withContext Result.failure(it)
                     }
-
-                localActors = moviesLocalDataSource.getActors(movieId)
-                println("aaa2" + localActors)
             }
 
-            Result.success(localActors.map { it.toModel() })
+            val localActors = moviesLocalDataSource.getActors(movie.actors)
+
+            if (localActors.isNotEmpty()) {
+                Result.success(localActors.map { it.toModel() })
+            } else {
+                Result.failure(Exception("Actors cashing error!"))
+            }
         }
 
     private suspend fun getActorsFromServer(

@@ -51,11 +51,15 @@ class MoviesLocalDataSourceImpl(
         movieDetailsDao.clear()
     }
 
-    override suspend fun getActors(movieId: Int): List<ActorEntity> =
-        actorsDao.getActors(movieId)
+    override suspend fun getActors(actorsId: List<Int>): List<ActorEntity> =
+        actorsDao.getActors(actorsId)
 
     override suspend fun setActors(actors: List<ActorEntity>) {
         actorsDao.insertAll(actors)
+    }
+
+    override suspend fun setActorsLoaded(movieId: Int) {
+        movieDetailsDao.setActorsLoaded(movieId)
     }
 
     override suspend fun clearActors() {

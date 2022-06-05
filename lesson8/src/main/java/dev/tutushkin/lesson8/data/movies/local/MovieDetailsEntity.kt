@@ -37,4 +37,10 @@ data class MovieDetailsEntity(
 
     @ColumnInfo(name = "genres")
     val genres: String,
+
+    @ColumnInfo(name = "actors")
+    var actors: List<Int> = listOf(),
+
+    @ColumnInfo(name = "isActorsLoaded")
+    val isActorsLoaded: Boolean = false
 )
