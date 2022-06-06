@@ -1,8 +1,2 @@
-include ':lesson8'
-include ':lesson7'
-include ':lesson6'
-include ':lesson5'
-include ':lesson4'
-include ':lesson3'
-include ':lesson2'
-rootProject.name = "AAGFundamentals2020"
+include ':app'
+rootProject.name = "All Movies"
