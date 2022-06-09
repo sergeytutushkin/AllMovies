@@ -4,6 +4,7 @@ buildscript {
         kotlin_version = '1.7.0'
         lifecycle_version = '2.4.1'
         room_version = '2.4.2'
+        okhttp_version = '4.9.0'
     }
 
     repositories {
