@@ -17,7 +17,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "API_KEY", "\"64b046ff6c8ba1672ae93b398857b4e1\""
@@ -28,7 +28,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
