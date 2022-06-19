@@ -1,0 +1,1 @@
+With this application, you can find out information about almost any existing films, TV shows, actors and other people who participated in their creation. Because it is based on The Movie Database (TMDB), which includes information about more than 775,000 films, 135,000 TV shows and 2.5 million people.
