@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 def localProperties = new Properties()
@@ -74,7 +75,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
-//    implementation 'com.clostra.newnode:newnode:2.0.3'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.room:room-testing:$room_version"
