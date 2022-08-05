@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dev.tutushkin.allmovies.R
 import dev.tutushkin.allmovies.data.core.db.MoviesDb
@@ -14,7 +15,6 @@ import dev.tutushkin.allmovies.data.movies.MoviesRepositoryImpl
 import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
 import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesListBinding
-import dev.tutushkin.allmovies.presentation.moviedetails.view.MovieDetailsFragment
 import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesState
 import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesViewModel
 import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesViewModelFactory
@@ -61,14 +61,18 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
         val listener = object : MoviesClickListener {
             override fun onItemClick(movieId: Int) {
-                val bundle = Bundle()
-                bundle.putInt(MOVIES_KEY, movieId)
-                val detailsFragment = MovieDetailsFragment()
-                detailsFragment.arguments = bundle
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.main_container, detailsFragment)
-                    .commit()
+                val action =
+                    MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movieId)
+                view.findNavController().navigate(action)
+
+//                val bundle = Bundle()
+//                bundle.putInt(MOVIES_KEY, movieId)
+//                val detailsFragment = MovieDetailsFragment()
+//                detailsFragment.arguments = bundle
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .addToBackStack(null)
+//                    .replace(R.id.main_container, detailsFragment)
+//                    .commit()
             }
         }
 

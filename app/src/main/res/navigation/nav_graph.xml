@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/moviesFragment">
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="dev.tutushkin.allmovies.presentation.moviedetails.view.MovieDetailsFragment"
+        android:label="MovieDetailsFragment">
+        <argument
+            android:name="movieId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="dev.tutushkin.allmovies.presentation.movies.view.MoviesFragment"
+        android:label="MoviesFragment">
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+</navigation>
