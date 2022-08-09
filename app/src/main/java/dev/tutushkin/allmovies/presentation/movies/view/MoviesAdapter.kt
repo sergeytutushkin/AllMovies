@@ -36,5 +36,5 @@ class MoviesListDiffCallback : DiffUtil.ItemCallback<MovieList>() {
 }
 
 interface MoviesClickListener {
-    fun onItemClick(movieId: Long)
+    fun onItemClick(movieId: Int)
 }

@@ -10,7 +10,7 @@
         android:label="MovieDetailsFragment">
         <argument
             android:name="movieId"
-            app:argType="long" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/moviesFragment"

@@ -21,8 +21,6 @@ import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesViewModelFact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
 
-const val MOVIES_KEY = "MOVIES"
-
 @ExperimentalSerializationApi
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
@@ -64,15 +62,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
                 val action =
                     MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movieId)
                 view.findNavController().navigate(action)
-
-//                val bundle = Bundle()
-//                bundle.putInt(MOVIES_KEY, movieId)
-//                val detailsFragment = MovieDetailsFragment()
-//                detailsFragment.arguments = bundle
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .addToBackStack(null)
-//                    .replace(R.id.main_container, detailsFragment)
-//                    .commit()
             }
         }
 

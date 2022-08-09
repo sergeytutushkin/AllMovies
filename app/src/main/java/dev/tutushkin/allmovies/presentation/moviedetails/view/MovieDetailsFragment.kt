@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,7 +20,6 @@ import dev.tutushkin.allmovies.domain.movies.models.MovieDetails
 import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsState
 import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModel
 import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModelFactory
-import dev.tutushkin.allmovies.presentation.movies.view.MOVIES_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -43,11 +43,13 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         )
         val repository =
             MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-        val arg = arguments?.getInt(MOVIES_KEY, 0) ?: 0
+
+        val args: MovieDetailsFragmentArgs by navArgs()
+
         val viewModel: MovieDetailsViewModel by viewModels {
             MovieDetailsViewModelFactory(
                 repository,
-                arg
+                args.movieId
             )
         }
 

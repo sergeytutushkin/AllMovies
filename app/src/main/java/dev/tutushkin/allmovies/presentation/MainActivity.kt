@@ -2,7 +2,6 @@ package dev.tutushkin.allmovies.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
 import dev.tutushkin.allmovies.R
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -18,6 +17,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 // TODO Add tests
 // TODO Add logging
 // TODO Replace Toasts with SnackBars
+// TODO Add trailers
 
 @ExperimentalSerializationApi
 class MainActivity : AppCompatActivity() {
@@ -26,15 +26,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.main_container, MoviesFragment())
-//                .commit()
-//        }
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        val navController = navHostFragment.navController
     }
 
 }

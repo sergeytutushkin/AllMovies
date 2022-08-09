@@ -18,9 +18,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
 
-    <!--    <FrameLayout-->
-    <!--        android:id="@+id/main_container"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
