@@ -51,6 +51,8 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    namespace 'dev.tutushkin.allmovies'
 }
 
 ext {
