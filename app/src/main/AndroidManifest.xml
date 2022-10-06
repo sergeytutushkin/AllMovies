@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".AllMoviesApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AllMovies">
         <activity
-            android:name="dev.tutushkin.allmovies.presentation.MainActivity"
+            android:name="dev.tutushkin.allmovies.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

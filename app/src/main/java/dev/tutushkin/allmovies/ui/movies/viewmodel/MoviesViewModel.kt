@@ -1,16 +1,19 @@
-package dev.tutushkin.allmovies.presentation.movies.viewmodel
+package dev.tutushkin.allmovies.ui.movies.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.tutushkin.allmovies.BuildConfig
 import dev.tutushkin.allmovies.data.core.network.NetworkModule.allGenres
 import dev.tutushkin.allmovies.data.core.network.NetworkModule.configApi
 import dev.tutushkin.allmovies.domain.movies.MoviesRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MoviesViewModel(
+@HiltViewModel
+class MoviesViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 

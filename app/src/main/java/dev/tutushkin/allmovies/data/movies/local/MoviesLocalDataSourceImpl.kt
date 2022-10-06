@@ -1,6 +1,8 @@
 package dev.tutushkin.allmovies.data.movies.local
 
-class MoviesLocalDataSourceImpl(
+import javax.inject.Inject
+
+class MoviesLocalDataSourceImpl @Inject constructor(
     private val moviesDao: MoviesDao,
     private val movieDetailsDao: MovieDetailsDao,
     private val actorsDao: ActorsDao,

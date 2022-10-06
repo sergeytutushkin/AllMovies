@@ -7,8 +7,9 @@ import dev.tutushkin.allmovies.domain.movies.MoviesRepository
 import dev.tutushkin.allmovies.domain.movies.models.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MoviesRepositoryImpl(
+class MoviesRepositoryImpl @Inject constructor(
     private val moviesRemoteDataSource: MoviesRemoteDataSource,
     private val moviesLocalDataSource: MoviesLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher

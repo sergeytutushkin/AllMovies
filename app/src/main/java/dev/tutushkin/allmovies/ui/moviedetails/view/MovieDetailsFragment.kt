@@ -1,4 +1,4 @@
-package dev.tutushkin.allmovies.presentation.moviedetails.view
+package dev.tutushkin.allmovies.ui.moviedetails.view
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import dev.tutushkin.allmovies.R
 import dev.tutushkin.allmovies.data.core.db.MoviesDb
 import dev.tutushkin.allmovies.data.core.network.NetworkModule
@@ -17,13 +18,12 @@ import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
 import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesDetailsBinding
 import dev.tutushkin.allmovies.domain.movies.models.MovieDetails
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsState
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModel
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModelFactory
+import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsState
+import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsViewModel
+import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsViewModelFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.ExperimentalSerializationApi
 
-@ExperimentalSerializationApi
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 
     private var _binding: FragmentMoviesDetailsBinding? = null

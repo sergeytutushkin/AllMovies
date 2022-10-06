@@ -1,6 +1,8 @@
 package dev.tutushkin.allmovies.data.movies.remote
 
-class MoviesRemoteDataSourceImpl(
+import javax.inject.Inject
+
+class MoviesRemoteDataSourceImpl @Inject constructor(
     private val moviesApi: MoviesApi
 ) : MoviesRemoteDataSource {
 

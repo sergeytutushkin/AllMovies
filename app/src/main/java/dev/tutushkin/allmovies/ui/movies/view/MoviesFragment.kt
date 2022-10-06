@@ -1,4 +1,4 @@
-package dev.tutushkin.allmovies.presentation.movies.view
+package dev.tutushkin.allmovies.ui.movies.view
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import dev.tutushkin.allmovies.R
 import dev.tutushkin.allmovies.data.core.db.MoviesDb
 import dev.tutushkin.allmovies.data.core.network.NetworkModule.moviesApi
@@ -15,13 +16,12 @@ import dev.tutushkin.allmovies.data.movies.MoviesRepositoryImpl
 import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
 import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesListBinding
-import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesState
-import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesViewModel
-import dev.tutushkin.allmovies.presentation.movies.viewmodel.MoviesViewModelFactory
+import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesState
+import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesViewModel
+import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesViewModelFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.ExperimentalSerializationApi
 
-@ExperimentalSerializationApi
+@AndroidEntryPoint
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 
     private var _binding: FragmentMoviesListBinding? = null

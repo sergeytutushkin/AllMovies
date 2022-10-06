@@ -1,4 +1,4 @@
-package dev.tutushkin.allmovies.presentation.moviedetails.view
+package dev.tutushkin.allmovies.ui.moviedetails.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
