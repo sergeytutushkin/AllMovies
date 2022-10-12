@@ -1,8 +1,8 @@
 package dev.tutushkin.allmovies.data.movies
 
-import dev.tutushkin.allmovies.data.core.network.NetworkModule
 import dev.tutushkin.allmovies.data.movies.local.*
 import dev.tutushkin.allmovies.data.movies.remote.*
+import dev.tutushkin.allmovies.di.NetworkModule
 import dev.tutushkin.allmovies.domain.movies.models.Genre
 import java.text.SimpleDateFormat
 import java.util.*

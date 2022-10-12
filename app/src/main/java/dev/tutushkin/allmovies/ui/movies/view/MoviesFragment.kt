@@ -10,19 +10,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.tutushkin.allmovies.R
-import dev.tutushkin.allmovies.data.core.db.MoviesDb
-import dev.tutushkin.allmovies.data.core.network.NetworkModule.moviesApi
-import dev.tutushkin.allmovies.data.movies.MoviesRepositoryImpl
-import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
-import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesListBinding
 import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesState
 import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesViewModel
-import dev.tutushkin.allmovies.ui.movies.viewmodel.MoviesViewModelFactory
-import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
+
+    private val viewModel: MoviesViewModel by viewModels()
 
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
@@ -35,19 +30,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_list) {
 // TODO Column alignment RecyclerView
 //        val displayMetrics = DisplayMetrics()
 //            ...
-
-        val db = MoviesDb.getDatabase(requireActivity().application)
-        val remoteDataSource = MoviesRemoteDataSourceImpl(moviesApi)
-        val localDataSource = MoviesLocalDataSourceImpl(
-            db.moviesDao(),
-            db.movieDetails(),
-            db.actorsDao(),
-            db.configurationDao(),
-            db.genresDao()
-        )
-        val repository =
-            MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-        val viewModel: MoviesViewModel by viewModels { MoviesViewModelFactory(repository) }
 
         _binding = FragmentMoviesListBinding.bind(view)
 

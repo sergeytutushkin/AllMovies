@@ -5,53 +5,26 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import dev.tutushkin.allmovies.R
-import dev.tutushkin.allmovies.data.core.db.MoviesDb
-import dev.tutushkin.allmovies.data.core.network.NetworkModule
-import dev.tutushkin.allmovies.data.movies.MoviesRepositoryImpl
-import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
-import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesDetailsBinding
 import dev.tutushkin.allmovies.domain.movies.models.MovieDetails
 import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsState
 import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsViewModel
-import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsViewModelFactory
-import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
+
+    private val viewModel: MovieDetailsViewModel by viewModels()
 
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val db = MoviesDb.getDatabase(requireActivity().application)
-        val remoteDataSource = MoviesRemoteDataSourceImpl(NetworkModule.moviesApi)
-        val localDataSource = MoviesLocalDataSourceImpl(
-            db.moviesDao(),
-            db.movieDetails(),
-            db.actorsDao(),
-            db.configurationDao(),
-            db.genresDao()
-        )
-        val repository =
-            MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-
-        val args: MovieDetailsFragmentArgs by navArgs()
-
-        val viewModel: MovieDetailsViewModel by viewModels {
-            MovieDetailsViewModelFactory(
-                repository,
-                args.movieId
-            )
-        }
 
         _binding = FragmentMoviesDetailsBinding.bind(view)
 

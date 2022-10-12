@@ -18,7 +18,7 @@ object DatabaseModule {
     @Provides
     fun provideMoviesDb(
         @ApplicationContext appContext: Context
-    ): MoviesDb = MoviesDb.getDatabase(appContext)
+    ): MoviesDb = MoviesDb.create(appContext)
 
     @Provides
     fun provideMoviesDao(
