@@ -9,16 +9,18 @@ Android application with movie catalog based on [TMDB API](https://www.themovied
 Technology stack
 ---
 <li>Kotlin
+<li>Hilt
+<li>Coroutines
 <li>MVVM
 <li>ViewModel
 <li>LiveData
-<li>Coroutines
+<li>Navigation
+<li>ViewBinding
 <li>Room
 <li>Retrofit
 <li>OkHttp
-<li>Glide
 <li>RecyclerView
-<li>ViewBinding
+<li>Glide
 
 ---
 [Google Play](https://play.google.com/store/apps/details?id=dev.tutushkin.allmovies)
