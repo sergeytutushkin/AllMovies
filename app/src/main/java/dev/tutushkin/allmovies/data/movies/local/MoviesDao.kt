@@ -7,17 +7,17 @@ interface MoviesDao {
 
     @Transaction
     @Query("SELECT * FROM movies")
-    fun getNowPlaying(): List<MovieListEntity>
+    suspend fun getNowPlaying(): List<MovieListEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: MovieListEntity): Long
+    suspend fun insert(movie: MovieListEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(movies: List<MovieListEntity>)
+    suspend fun insertAll(movies: List<MovieListEntity>)
 
     @Query("DELETE FROM movies WHERE id = :id")
-    fun delete(id: Int)
+    suspend fun delete(id: Int)
 
     @Query("DELETE FROM movies")
-    fun clear()
+    suspend fun clear()
 }

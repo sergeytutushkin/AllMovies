@@ -9,17 +9,17 @@ import androidx.room.Query
 interface MovieDetailsDao {
 
     @Query("SELECT * FROM movie_details WHERE id = :id")
-    fun getMovieDetails(id: Int): MovieDetailsEntity?
+    suspend fun getMovieDetails(id: Int): MovieDetailsEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: MovieDetailsEntity): Long
+    suspend fun insert(movie: MovieDetailsEntity): Long
 
     @Query("UPDATE movie_details SET isActorsLoaded = 1 WHERE id = :id")
-    fun setActorsLoaded(id: Int)
+    suspend fun setActorsLoaded(id: Int)
 
     @Query("DELETE FROM movie_details WHERE id = :id")
-    fun delete(id: Int)
+    suspend fun delete(id: Int)
 
     @Query("DELETE FROM movie_details")
-    fun clear()
+    suspend fun clear()
 }

@@ -1,30 +1,25 @@
-package dev.tutushkin.allmovies.presentation.moviedetails.view
+package dev.tutushkin.allmovies.ui.moviedetails.view
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import dev.tutushkin.allmovies.R
-import dev.tutushkin.allmovies.data.core.db.MoviesDb
-import dev.tutushkin.allmovies.data.core.network.NetworkModule
-import dev.tutushkin.allmovies.data.movies.MoviesRepositoryImpl
-import dev.tutushkin.allmovies.data.movies.local.MoviesLocalDataSourceImpl
-import dev.tutushkin.allmovies.data.movies.remote.MoviesRemoteDataSourceImpl
 import dev.tutushkin.allmovies.databinding.FragmentMoviesDetailsBinding
 import dev.tutushkin.allmovies.domain.movies.models.MovieDetails
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsState
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModel
-import dev.tutushkin.allmovies.presentation.moviedetails.viewmodel.MovieDetailsViewModelFactory
-import dev.tutushkin.allmovies.presentation.movies.view.MOVIES_KEY
-import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.ExperimentalSerializationApi
+import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsState
+import dev.tutushkin.allmovies.ui.moviedetails.viewmodel.MovieDetailsViewModel
 
-@ExperimentalSerializationApi
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
+
+    private val viewModel: MovieDetailsViewModel by viewModels()
 
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding
@@ -32,31 +27,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val db = MoviesDb.getDatabase(requireActivity().application)
-        val remoteDataSource = MoviesRemoteDataSourceImpl(NetworkModule.moviesApi)
-        val localDataSource = MoviesLocalDataSourceImpl(
-            db.moviesDao(),
-            db.movieDetails(),
-            db.actorsDao(),
-            db.configurationDao(),
-            db.genresDao()
-        )
-        val repository =
-            MoviesRepositoryImpl(remoteDataSource, localDataSource, Dispatchers.Default)
-        val arg = arguments?.getInt(MOVIES_KEY, 0) ?: 0
-        val viewModel: MovieDetailsViewModel by viewModels {
-            MovieDetailsViewModelFactory(
-                repository,
-                arg
-            )
-        }
-
         _binding = FragmentMoviesDetailsBinding.bind(view)
 
         viewModel.currentMovie.observe(viewLifecycleOwner, ::render)
 
         binding?.moviesDetailsBackText?.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            view.findNavController().popBackStack()
         }
     }
 
