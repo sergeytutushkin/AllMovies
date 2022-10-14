@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,7 +32,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         viewModel.currentMovie.observe(viewLifecycleOwner, ::render)
 
         binding?.moviesDetailsBackText?.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            view.findNavController().popBackStack()
         }
     }
 
