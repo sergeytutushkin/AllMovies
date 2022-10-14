@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".presentation.MainActivity">
+        tools:context=".ui.MainActivity">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_guideline"

@@ -9,11 +9,11 @@ import androidx.room.Query
 interface ConfigurationDao {
 
     @Query("SELECT * FROM configuration")
-    fun get(): ConfigurationEntity?
+    suspend fun get(): ConfigurationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(configuration: ConfigurationEntity): Long
+    suspend fun insert(configuration: ConfigurationEntity): Long
 
     @Query("DELETE FROM configuration")
-    fun delete()
+    suspend fun delete()
 }

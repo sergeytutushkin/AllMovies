@@ -7,11 +7,11 @@ interface ActorsDao {
 
     @Transaction
     @Query("SELECT * FROM actors WHERE id IN (:actorsId)")
-    fun getActors(actorsId: List<Int>): List<ActorEntity>
+    suspend fun getActors(actorsId: List<Int>): List<ActorEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(actors: List<ActorEntity>)
+    suspend fun insertAll(actors: List<ActorEntity>)
 
     @Query("DELETE FROM actors")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

@@ -1,17 +1,19 @@
 package dev.tutushkin.allmovies.data.movies.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface GenresDao {
 
-    @Transaction
     @Query("SELECT * FROM genres")
-    fun getAll(): List<GenreEntity>
+    suspend fun getAll(): List<GenreEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(genres: List<GenreEntity>)
+    suspend fun insertAll(genres: List<GenreEntity>)
 
     @Query("DELETE FROM genres")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

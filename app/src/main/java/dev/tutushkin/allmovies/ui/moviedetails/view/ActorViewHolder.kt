@@ -1,4 +1,4 @@
-package dev.tutushkin.allmovies.presentation.moviedetails.view
+package dev.tutushkin.allmovies.ui.moviedetails.view
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

@@ -1,6 +1,10 @@
-package dev.tutushkin.allmovies.data.core.network
+package dev.tutushkin.allmovies.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import dev.tutushkin.allmovies.BuildConfig
 import dev.tutushkin.allmovies.data.movies.remote.MoviesApi
 import dev.tutushkin.allmovies.domain.movies.models.Configuration
@@ -13,42 +17,49 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 // TODO Implement Api Key through the interceptor
-// TODO Get off singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    // TODO Move genre and config variables to another module
     var allGenres: List<Genre> = listOf()
 
     // TODO Move to DataStore(?)
     var configApi: Configuration = Configuration()
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient().newBuilder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .writeTimeout(15, TimeUnit.SECONDS)
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .build()
 
     private val json = Json {
         prettyPrint = true
         ignoreUnknownKeys = true
     }
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    private val client = OkHttpClient().newBuilder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(10, TimeUnit.SECONDS)
-        .addInterceptor(loggingInterceptor)
-        .addNetworkInterceptor(loggingInterceptor)
-        .build()
-
-    private val contentType = "application/json".toMediaType()
-
+    @Singleton
+    @Provides
     @ExperimentalSerializationApi
-    private val retrofit = Retrofit.Builder()
+    fun provideRetrofit(
+        client: OkHttpClient
+    ): Retrofit = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(client)
-        .addConverterFactory(json.asConverterFactory(contentType))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
+    @Singleton
+    @Provides
     @ExperimentalSerializationApi
-    val moviesApi: MoviesApi = retrofit.create()
+    fun provideMoviesApi(
+        retrofit: Retrofit
+    ): MoviesApi = retrofit.create()
 }

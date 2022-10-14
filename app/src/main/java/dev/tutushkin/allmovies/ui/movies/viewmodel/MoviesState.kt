@@ -1,4 +1,4 @@
-package dev.tutushkin.allmovies.presentation.movies.viewmodel
+package dev.tutushkin.allmovies.ui.movies.viewmodel
 
 import dev.tutushkin.allmovies.domain.movies.models.MovieList
 
